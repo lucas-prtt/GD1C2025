@@ -26,7 +26,7 @@ BEGIN
     EXEC DataCore.CrearTablaDetallesFacturas;
     EXEC DataCore.CrearTablaEnvios;
 END
-EXEC DataCore.CrearTodasLasTablas
+
 -- PROCEDURE: Crear tabla Localidades
 -- Crear el schema solo si no existe
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'DataCore')
@@ -515,7 +515,8 @@ BEGIN
 END
 GO
 
-
+EXEC DataCore.CrearTodasLasTablas
+        
 GO
 -- Constraints para PKs
 ALTER TABLE DataCore.Localidades ADD CONSTRAINT PK_Localidades PRIMARY KEY (Localidad_Id);
