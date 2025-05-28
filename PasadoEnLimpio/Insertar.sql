@@ -1,4 +1,3 @@
-
 	    -- FUNCION PARA OBTENER LOCALIDADID con nombre de localidad y provincia
 
 CREATE FUNCTION DATACORE.GETLOCALIDADID( @PROVINCIA VARCHAR(255), @LOCALIDAD VARCHAR(255)) RETURNS BIGINT
@@ -99,7 +98,7 @@ FROM gd_esquema.Maestra
 WHERE Compra_Numero IS NOT NULL
 GO
 
--- Material Tipo
+--							 TIPOS MATERIALES
 INSERT INTO DATACORE.TipoMateriales (TipoMaterial_Tipo)
 SELECT DISTINCT Material_Tipo
 FROM gd_esquema.Maestra
@@ -232,7 +231,26 @@ SELECT DISTINCT
 FROM gd_esquema.Maestra
 WHERE Envio_Numero IS NOT NULL
 
+--                            MATERIALES POR SILLONES
 
+INSERT INTO DATACORE.Materiales_Sillones (Material_Id, Sillon_Codigo)
+SELECT q2.Material_Id, q1.Sillon_Codigo
+FROM
+	(SELECT DISTINCT m.Sillon_Codigo, m.Material_Nombre, m.Material_Descripcion, Material_Precio, t.TipoMaterial_Id, t.TipoMaterial_Tipo,Tela_Color, Tela_Textura, Madera_Color, Madera_Dureza, Relleno_Densidad
+	FROM gd_esquema.Maestra m INNER JOIN DATACORE.TipoMateriales t ON t.TipoMaterial_Tipo = m.Material_Tipo
+	WHERE Material_Tipo IS NOT NULL AND Sillon_Codigo IS NOT NULL) as q1
+INNER JOIN 
+	(
+	SELECT m.Material_Id, Material_Nombre, Material_Descripcion, Material_Precio, Madera_Color, Madera_Dureza, Tela_Color, Tela_Textura, Relleno_Densidad
+	FROM 
+	DATACORE.Materiales m FULL OUTER JOIN DATACORE.Maderas mad ON mad.Material_Id = m.Material_Id
+	FULL OUTER JOIN DATACORE.Telas tel ON tel.Material_Id = m.Material_Id
+	FULL OUTER JOIN DATACORE.Rellenos rel ON rel.Material_Id = m.Material_Id
+	) q2 
+	ON 
+	q1.Material_Nombre = q2.Material_Nombre		
+-- Para esta tabla alcanza con solo comparar el nombre. En otra podria hacer falta comparar todos los campos para saber que se trata del mismo material
+	
 
 
 
