@@ -213,6 +213,14 @@ INNER JOIN DATACORE.PEDIDOS p ON m.Pedido_Numero = p.Pedido_Numero
 WHERE m.Pedido_Cancelacion_Motivo IS NOT NULL
 GO
 
+				--				FACTURAS
+
+INSERT INTO DATACORE.Facturas (Factura_Numero, Factura_Fecha, Factura_Total, Cliente_Dni, Sucursal_NroSucursal)
+SELECT DISTINCT Factura_Numero, Factura_Fecha, Factura_Total, Cliente_Dni, Sucursal_NroSucursal 
+FROM gd_esquema.Maestra
+WHERE Factura_Total IS NOT NULL
+GO
+
 
 --			ENVIOS   (Este debe ir luego de facturas)
 INSERT INTO DataCore.Envios (
