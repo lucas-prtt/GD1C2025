@@ -145,7 +145,7 @@ BEGIN
     BEGIN TRANSACTION
         IF OBJECT_ID('DataCore.Proveedores', 'U') IS NOT NULL DROP TABLE DataCore.Proveedores;
         CREATE TABLE DataCore.Proveedores (
-            Proveedor_Cuit VARCHAR(255) NOT NULL,,
+            Proveedor_Cuit VARCHAR(255) NOT NULL,
             Proveedor_RazonSocial VARCHAR(255),
             Proveedor_Direccion VARCHAR(255),
             Proveedor_Telefono VARCHAR(255),
