@@ -91,4 +91,9 @@ SELECT DISTINCT Proveedor_Cuit, Proveedor_Direccion, Proveedor_Mail, Proveedor_R
 	WHERE Proveedor_Cuit IS NOT NULL
 
 
+--								COMPRAS
 
+INSERT INTO DATACORE.Compras(Compra_Numero, Compra_Total, Sucursal_NroSucursal, Proveedor_Cuit)
+SELECT DISTINCT Compra_Numero, Compra_Total, Compra_Fecha ,Sucursal_NroSucursal, Proveedor_Cuit
+FROM gd_esquema.Maestra
+WHERE Compra_Numero IS NOT NULL
