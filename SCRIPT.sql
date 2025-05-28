@@ -145,8 +145,7 @@ BEGIN
     BEGIN TRANSACTION
         IF OBJECT_ID('DataCore.Proveedores', 'U') IS NOT NULL DROP TABLE DataCore.Proveedores;
         CREATE TABLE DataCore.Proveedores (
-            Proveedor_Cuit VARCHAR(255) NOT NULL,
-            Proveedor_Provincia VARCHAR(255),
+            Proveedor_Cuit VARCHAR(255) NOT NULL,,
             Proveedor_RazonSocial VARCHAR(255),
             Proveedor_Direccion VARCHAR(255),
             Proveedor_Telefono VARCHAR(255),
@@ -170,8 +169,6 @@ BEGIN
         IF OBJECT_ID('DataCore.Sucursales', 'U') IS NOT NULL DROP TABLE DataCore.Sucursales;
         CREATE TABLE DataCore.Sucursales (
             Sucursal_NroSucursal BIGINT NOT NULL,
-            Sucursal_Provincia VARCHAR(255),
-            Sucursal_Localidad VARCHAR(255),
             Sucursal_Direccion VARCHAR(255),
             Sucursal_Telefono VARCHAR(255),
             Sucursal_Mail VARCHAR(255),
@@ -194,8 +191,6 @@ BEGIN
         IF OBJECT_ID('DataCore.Clientes', 'U') IS NOT NULL DROP TABLE DataCore.Clientes;
         CREATE TABLE DataCore.Clientes (
             Cliente_Dni VARCHAR(255) NOT NULL,
-            Cliente_Provincia VARCHAR(255),
-            Cliente_Localidad VARCHAR(255),
             Cliente_Nombre VARCHAR(255),
             Cliente_Apellido VARCHAR(255),
             Cliente_FechaNacimiento DATE,
