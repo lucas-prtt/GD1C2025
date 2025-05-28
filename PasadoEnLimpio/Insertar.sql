@@ -153,24 +153,25 @@ END
 GO
 EXEC DATACORE.ImportarMateriales
 GO
--- SU 
 
 -- 							MEDIDAS
 INSERT INTO DataCore.Medidas (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Medida_Precio)
 SELECT DISTINCT Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Medida_Precio FROM gd_esquema.Maestra
 WHERE Sillon_Medida_Alto IS NOT NULL AND Sillon_Medida_Ancho IS NOT NULL AND Sillon_Medida_Profundidad IS NOT NULL;
-
+GO
 -- 							ModELOS SILLONES
 INSERT INTO DATACORE.Modelos_de_Sillones(Sillon_Modelo_Codigo, Sillon_Modelo_Precio, Sillon_Modelo, Sillon_Modelo_Descripcion )
 SELECT DISTINCT Sillon_Modelo_Codigo, Sillon_Modelo_Precio, Sillon_Modelo, Sillon_Modelo_Descripcion
 FROM  gd_esquema.Maestra
 WHERE Sillon_Modelo_Codigo IS NOT NULL
+GO
 
 --                       Silllones
 INSERT INTO DATACORE.Sillones(Sillon_codigo, Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Modelo_Codigo)
 SELECT DISTINCT Sillon_codigo, Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Modelo_Codigo
 FROM gd_esquema.Maestra
 WHERE Sillon_Codigo IS NOT NULL
+GO
 
 
 --									DETALLE COMPRAS
@@ -190,6 +191,7 @@ WHERE
     m.Compra_Numero IS NOT NULL
     AND m.Material_Nombre IS NOT NULL
     AND m.Detalle_Compra_Cantidad IS NOT NULL
+GO
 
 -- 								PEDIDOS
 INSERT INTO DATACORE.Pedidos(Pedido_Numero, Pedido_Fecha, Pedido_Total, Sucursal_NroSucursal, Cliente_Dni)
@@ -198,6 +200,7 @@ FROM gd_esquema.Maestra m
 INNER JOIN DATACORE.Clientes c ON m.Cliente_Dni = c.Cliente_Dni
 INNER JOIN DATACORE.Sucursales s ON m.Sucursal_NroSucursal = s.Sucursal_NroSucursal
 WHERE Pedido_Numero IS NOT NULL;
+GO
 
 
 -- 								PEDIDOS CANCELACION
@@ -208,6 +211,7 @@ SELECT DISTINCT Pedido_Cancelacion_Fecha, Pedido_Cancelacion_Motivo, p.Pedido_Nu
 FROM gd_esquema.Maestra m
 INNER JOIN DATACORE.PEDIDOS p ON m.Pedido_Numero = p.Pedido_Numero
 WHERE m.Pedido_Cancelacion_Motivo IS NOT NULL
+GO
 
 
 --			ENVIOS   (Este debe ir luego de facturas)
@@ -230,6 +234,7 @@ SELECT DISTINCT
     Factura_Numero
 FROM gd_esquema.Maestra
 WHERE Envio_Numero IS NOT NULL
+GO
 
 --                            MATERIALES POR SILLONES
 
@@ -248,11 +253,35 @@ INNER JOIN
 	FULL OUTER JOIN DATACORE.Rellenos rel ON rel.Material_Id = m.Material_Id
 	) q2 
 	ON 
-	q1.Material_Nombre = q2.Material_Nombre		
+	q1.Material_Nombre = q2.Material_Nombre	
+GO
 -- Para esta tabla alcanza con solo comparar el nombre. En otra podria hacer falta comparar todos los campos para saber que se trata del mismo material
 	
 
+--							DETALLES FACTURA
 
+INSERT INTO DATACORE.Detalles_Facturas (Factura_Numero, Sillon_Codigo, Pedido_Numero, Detalle_Factura_Cantidad, Detalle_Factura_Precio, Detalle_Factura_Subtotal)
+SELECT DISTINCT a.Factura_Numero, b.Sillon_Codigo, a.Pedido_Numero, Detalle_Factura_Cantidad ,Detalle_Factura_Precio, Detalle_Factura_SubTotal
+FROM 
+	(
+	SELECT Pedido_Numero, Factura_Numero, Detalle_Factura_Cantidad, Detalle_Factura_Precio, Detalle_Factura_SubTotal
+	FROM gd_esquema.Maestra
+	WHERE Pedido_Numero IS NOT NULL OR Factura_Numero IS NOT NULL
+	) a
+INNER JOIN 
+	(
+	SELECT Pedido_Numero, Sillon_Codigo, Detalle_Pedido_Cantidad, Detalle_Pedido_Precio, Detalle_Pedido_SubTotal
+	FROM gd_esquema.Maestra
+	WHERE Pedido_Numero IS NOT NULL OR Factura_Numero IS NOT NULL
+	) b
 
+ON a.Pedido_Numero = b.Pedido_Numero AND a.Detalle_Factura_SubTotal = b.Detalle_Pedido_SubTotal AND a.Detalle_Factura_Precio = b.Detalle_Pedido_Precio AND a.Detalle_Factura_Cantidad = b.Detalle_Pedido_Cantidad
+-- Como no hay un DETALLE_PEDIDO_NUMERO o similar en la tabla y siempre que se registra
+-- pedidos es o con sillonCodigo o con numeroFactura, nunca los dos a la vez, unifico
+-- Utilizando la cantidad y el subtotal, suponiendo que se factura la misma cantidad 
+-- de sillones pedidos y por el mismo precio
+WHERE Sillon_Codigo IS NOT NULL
+ORDER BY a.Factura_Numero, b.Sillon_Codigo, a.Pedido_Numero, Detalle_Factura_Cantidad ,Detalle_Factura_Precio, Detalle_Factura_SubTotal
 
+GO
 
