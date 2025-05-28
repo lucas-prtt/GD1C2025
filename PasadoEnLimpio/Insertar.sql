@@ -73,7 +73,7 @@ GO
 --                               SUCURSALES
 
 
-INSERT INTO DATACORE.Sucursales(Sucursal_NroSucursal,Sucursal_Telefono, Sucursal_Direccion, Sucursal_Mail, Localidad_Id)
+INSERT INTO DATACORE.Sucursales (Sucursal_NroSucursal,Sucursal_Telefono, Sucursal_Direccion, Sucursal_Mail, Localidad_Id)
 SELECT 
     DISTINCT Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion, Sucursal_mail, DATACORE.GETLOCALIDADID(Sucursal_Provincia, Sucursal_Localidad) as Localidad_Id
 FROM 
@@ -83,7 +83,7 @@ GO
 --								  PROVEEDORES
 
 
-INSERT INTO DATACORE.Proveedores(Proveedor_Cuit, Proveedor_Direccion, Proveedor_Mail, Proveedor_RazonSocial, Proveedor_Telefono, Localidad_Id)
+INSERT INTO DATACORE.Proveedores (Proveedor_Cuit, Proveedor_Direccion, Proveedor_Mail, Proveedor_RazonSocial, Proveedor_Telefono, Localidad_Id)
 SELECT DISTINCT Proveedor_Cuit, Proveedor_Direccion, Proveedor_Mail, Proveedor_RazonSocial, Proveedor_Telefono, DATACORE.GETLOCALIDADID(Proveedor_Provincia, Proveedor_Localidad) as Localidad_Id
 	FROM gd_esquema.Maestra
 	WHERE Proveedor_Cuit IS NOT NULL
@@ -221,6 +221,17 @@ FROM gd_esquema.Maestra
 WHERE Factura_Total IS NOT NULL
 GO
 
+
+--			DETALLES DE PEDIDOS
+
+INSERT INTO DATACORE.Detalles_Pedidos (Pedido_Numero, Sillon_Codigo, Detalle_Pedido_Cantidad, Detalle_Pedido_Precio, Detalle_Pedido_Subtotal)
+SELECT DISTINCT q.Pedido_Numero, q.Sillon_Codigo, q.Detalle_Pedido_Cantidad, q.Detalle_Pedido_Precio, q.Detalle_Pedido_SubTotal
+FROM (
+	SELECT Pedido_Numero, Sillon_Codigo, Detalle_Pedido_Cantidad, Detalle_Pedido_Precio, Detalle_Pedido_SubTotal
+	FROM gd_esquema.Maestra
+	) q
+WHERE Sillon_Codigo IS NOT NULL
+GO
 
 --			ENVIOS   (Este debe ir luego de facturas)
 INSERT INTO DataCore.Envios (
