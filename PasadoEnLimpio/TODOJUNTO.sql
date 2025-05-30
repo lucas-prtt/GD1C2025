@@ -1,5 +1,5 @@
-
-IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'DataCore')
+USE [Prueba 21]
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'DATACORE')
 BEGIN 
     EXEC ('CREATE SCHEMA DATACORE')
 END
@@ -7,13 +7,13 @@ GO
 
 
 
-CREATE PROCEDURE DataCore.CrearTablaProvincias
+CREATE PROCEDURE DATACORE.CrearTablaProvincias
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Provincias', 'U') IS NOT NULL DROP TABLE DataCore.Provincias;
-        CREATE TABLE DataCore.Provincias (
+        IF OBJECT_ID('DATACORE.Provincias', 'U') IS NOT NULL DROP TABLE DATACORE.Provincias;
+        CREATE TABLE DATACORE.Provincias (
             Provincia_Id BIGINT IDENTITY(1,1) NOT NULL,
             Provincia_Nombre VARCHAR(255)
         );
@@ -26,13 +26,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaLocalidades
+CREATE PROCEDURE DATACORE.CrearTablaLocalidades
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Localidades', 'U') IS NOT NULL DROP TABLE DataCore.Localidades;
-        CREATE TABLE DataCore.Localidades (
+        IF OBJECT_ID('DATACORE.Localidades', 'U') IS NOT NULL DROP TABLE DATACORE.Localidades;
+        CREATE TABLE DATACORE.Localidades (
             Localidad_Id BIGINT IDENTITY(1,1) NOT NULL,
             Provincia_Id BIGINT ,
             Localidad_Nombre VARCHAR(255)
@@ -46,13 +46,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaMedidas
+CREATE PROCEDURE DATACORE.CrearTablaMedidas
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Medidas', 'U') IS NOT NULL DROP TABLE DataCore.Medidas;
-        CREATE TABLE DataCore.Medidas (
+        IF OBJECT_ID('DATACORE.Medidas', 'U') IS NOT NULL DROP TABLE DATACORE.Medidas;
+        CREATE TABLE DATACORE.Medidas (
             Sillon_Medida_Alto DECIMAL(18,2) NOT NULL,
             Sillon_Medida_Ancho DECIMAL(18,2) NOT NULL,
             Sillon_Medida_Profundidad DECIMAL(18,2) NOT NULL,
@@ -67,13 +67,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaModelosSillones
+CREATE PROCEDURE DATACORE.CrearTablaModelosSillones
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Modelos_de_Sillones', 'U') IS NOT NULL DROP TABLE DataCore.Modelos_de_Sillones;
-        CREATE TABLE DataCore.Modelos_De_Sillones (
+        IF OBJECT_ID('DATACORE.Modelos_de_Sillones', 'U') IS NOT NULL DROP TABLE DATACORE.Modelos_de_Sillones;
+        CREATE TABLE DATACORE.Modelos_De_Sillones (
             Sillon_Modelo_Codigo BIGINT NOT NULL,
             Sillon_Modelo_Precio DECIMAL(18, 2),
             Sillon_Modelo VARCHAR(255),
@@ -87,13 +87,13 @@ BEGIN
     END CATCH
 END
 GO
-CREATE PROCEDURE DataCore.CrearTablaTipoMateriales
+CREATE PROCEDURE DATACORE.CrearTablaTipoMateriales
 AS 
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.TipoMateriales', 'U') IS NOT NULL DROP TABLE DataCore.TipoMateriales;
-        CREATE TABLE DataCore.TipoMateriales (
+        IF OBJECT_ID('DATACORE.TipoMateriales', 'U') IS NOT NULL DROP TABLE DATACORE.TipoMateriales;
+        CREATE TABLE DATACORE.TipoMateriales (
             TipoMaterial_Id BIGINT IDENTITY(1,1) NOT NULL,
             TipoMaterial_Tipo VARCHAR(255)
         );
@@ -107,13 +107,13 @@ END
 GO
 
 
-CREATE PROCEDURE DataCore.CrearTablaProveedores
+CREATE PROCEDURE DATACORE.CrearTablaProveedores
 AS
 BEGIN
     BEGIN TRY
     BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Proveedores', 'U') IS NOT NULL DROP TABLE DataCore.Proveedores;
-        CREATE TABLE DataCore.Proveedores (
+        IF OBJECT_ID('DATACORE.Proveedores', 'U') IS NOT NULL DROP TABLE DATACORE.Proveedores;
+        CREATE TABLE DATACORE.Proveedores (
             Proveedor_Cuit VARCHAR(255) NOT NULL,
             Proveedor_RazonSocial VARCHAR(255),
             Proveedor_Direccion VARCHAR(255),
@@ -130,13 +130,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaSucursales
+CREATE PROCEDURE DATACORE.CrearTablaSucursales
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Sucursales', 'U') IS NOT NULL DROP TABLE DataCore.Sucursales;
-        CREATE TABLE DataCore.Sucursales (
+        IF OBJECT_ID('DATACORE.Sucursales', 'U') IS NOT NULL DROP TABLE DATACORE.Sucursales;
+        CREATE TABLE DATACORE.Sucursales (
             Sucursal_NroSucursal BIGINT NOT NULL,
             Sucursal_Direccion VARCHAR(255),
             Sucursal_Telefono VARCHAR(255),
@@ -152,13 +152,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaClientes
+CREATE PROCEDURE DATACORE.CrearTablaClientes
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Clientes', 'U') IS NOT NULL DROP TABLE DataCore.Clientes;
-        CREATE TABLE DataCore.Clientes (
+        IF OBJECT_ID('DATACORE.Clientes', 'U') IS NOT NULL DROP TABLE DATACORE.Clientes;
+        CREATE TABLE DATACORE.Clientes (
             Cliente_Dni VARCHAR(255) NOT NULL,
             Cliente_Nombre VARCHAR(255),
             Cliente_Apellido VARCHAR(255),
@@ -177,13 +177,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaMateriales
+CREATE PROCEDURE DATACORE.CrearTablaMateriales
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Materiales', 'U') IS NOT NULL DROP TABLE DataCore.Materiales;
-        CREATE TABLE DataCore.Materiales (
+        IF OBJECT_ID('DATACORE.Materiales', 'U') IS NOT NULL DROP TABLE DATACORE.Materiales;
+        CREATE TABLE DATACORE.Materiales (
             Material_Id BIGINT IDENTITY(1,1) NOT NULL,
             TipoMaterial_Id BIGINT,
             Material_Nombre VARCHAR(255),
@@ -199,13 +199,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaTelas
+CREATE PROCEDURE DATACORE.CrearTablaTelas
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Telas', 'U') IS NOT NULL DROP TABLE DataCore.Telas;
-        CREATE TABLE DataCore.Telas (
+        IF OBJECT_ID('DATACORE.Telas', 'U') IS NOT NULL DROP TABLE DATACORE.Telas;
+        CREATE TABLE DATACORE.Telas (
             Material_Id BIGINT NOT NULL,
             Tela_Color VARCHAR(255),
             Tela_Textura VARCHAR(255)
@@ -219,13 +219,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaMaderas
+CREATE PROCEDURE DATACORE.CrearTablaMaderas
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Maderas', 'U') IS NOT NULL DROP TABLE DataCore.Maderas;
-        CREATE TABLE DataCore.Maderas (
+        IF OBJECT_ID('DATACORE.Maderas', 'U') IS NOT NULL DROP TABLE DATACORE.Maderas;
+        CREATE TABLE DATACORE.Maderas (
             Material_Id BIGINT NOT NULL,
             Madera_Color VARCHAR(255),
             Madera_Dureza VARCHAR(255)
@@ -239,13 +239,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaRellenos
+CREATE PROCEDURE DATACORE.CrearTablaRellenos
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Rellenos', 'U') IS NOT NULL DROP TABLE DataCore.Rellenos;
-        CREATE TABLE DataCore.Rellenos (
+        IF OBJECT_ID('DATACORE.Rellenos', 'U') IS NOT NULL DROP TABLE DATACORE.Rellenos;
+        CREATE TABLE DATACORE.Rellenos (
             Material_Id BIGINT NOT NULL,
             Relleno_Densidad DECIMAL(38, 2)
         );
@@ -258,13 +258,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaSillones
+CREATE PROCEDURE DATACORE.CrearTablaSillones
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Sillones', 'U') IS NOT NULL DROP TABLE DataCore.Sillones;
-        CREATE TABLE DataCore.Sillones (
+        IF OBJECT_ID('DATACORE.Sillones', 'U') IS NOT NULL DROP TABLE DATACORE.Sillones;
+        CREATE TABLE DATACORE.Sillones (
             Sillon_Codigo BIGINT NOT NULL,
             Sillon_Medida_Alto DECIMAL(18,2),
             Sillon_Medida_Ancho DECIMAL(18,2),
@@ -280,13 +280,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaMaterialesSillones
+CREATE PROCEDURE DATACORE.CrearTablaMaterialesSillones
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Materiales_Sillones', 'U') IS NOT NULL DROP TABLE DataCore.Materiales_Sillones;
-        CREATE TABLE DataCore.Materiales_Sillones (
+        IF OBJECT_ID('DATACORE.Materiales_Sillones', 'U') IS NOT NULL DROP TABLE DATACORE.Materiales_Sillones;
+        CREATE TABLE DATACORE.Materiales_Sillones (
             Material_Id BIGINT NOT NULL,
             Sillon_Codigo BIGINT NOT NULL
         );
@@ -299,13 +299,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaCompras
+CREATE PROCEDURE DATACORE.CrearTablaCompras
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Compras', 'U') IS NOT NULL DROP TABLE DataCore.Compras;
-        CREATE TABLE DataCore.Compras (
+        IF OBJECT_ID('DATACORE.Compras', 'U') IS NOT NULL DROP TABLE DATACORE.Compras;
+        CREATE TABLE DATACORE.Compras (
             Compra_Numero BIGINT NOT NULL,
             Compra_Fecha DATETIME2(6),
             Compra_Total DECIMAL(18,2),
@@ -321,13 +321,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaDetallesCompras
+CREATE PROCEDURE DATACORE.CrearTablaDetallesCompras
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Detalles_Compras', 'U') IS NOT NULL DROP TABLE DataCore.Detalles_Compras;
-        CREATE TABLE DataCore.Detalles_Compras (
+        IF OBJECT_ID('DATACORE.Detalles_Compras', 'U') IS NOT NULL DROP TABLE DATACORE.Detalles_Compras;
+        CREATE TABLE DATACORE.Detalles_Compras (
             Compra_Numero BIGINT NOT NULL,
             Material_Id BIGINT NOT NULL,
             Detalle_Compra_Cantidad BIGINT,
@@ -343,13 +343,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaPedidos
+CREATE PROCEDURE DATACORE.CrearTablaPedidos
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Pedidos', 'U') IS NOT NULL DROP TABLE DataCore.Pedidos;
-        CREATE TABLE DataCore.Pedidos (
+        IF OBJECT_ID('DATACORE.Pedidos', 'U') IS NOT NULL DROP TABLE DATACORE.Pedidos;
+        CREATE TABLE DATACORE.Pedidos (
             Pedido_Numero BIGINT NOT NULL,
             Pedido_Fecha DATETIME2(6),
             Pedido_Estado VARCHAR(255),
@@ -366,13 +366,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaDetallesPedidos
+CREATE PROCEDURE DATACORE.CrearTablaDetallesPedidos
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Detalles_Pedidos', 'U') IS NOT NULL DROP TABLE DataCore.Detalles_Pedidos;
-        CREATE TABLE DataCore.Detalles_Pedidos (
+        IF OBJECT_ID('DATACORE.Detalles_Pedidos', 'U') IS NOT NULL DROP TABLE DATACORE.Detalles_Pedidos;
+        CREATE TABLE DATACORE.Detalles_Pedidos (
             Pedido_Numero BIGINT NOT NULL,
             Sillon_Codigo BIGINT NOT NULL,
             Detalle_Pedido_Cantidad BIGINT,
@@ -388,13 +388,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaPedidosCancelacion
+CREATE PROCEDURE DATACORE.CrearTablaPedidosCancelacion
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Pedidos_Cancelacion', 'U') IS NOT NULL DROP TABLE DataCore.Pedidos_Cancelacion;
-        CREATE TABLE DataCore.Pedidos_Cancelacion (
+        IF OBJECT_ID('DATACORE.Pedidos_Cancelacion', 'U') IS NOT NULL DROP TABLE DATACORE.Pedidos_Cancelacion;
+        CREATE TABLE DATACORE.Pedidos_Cancelacion (
             Pedido_Cancelacion_Num BIGINT IDENTITY(1,1) NOT NULL,
             Pedido_Cancelacion_Fecha DATETIME2(6),
             Pedido_Cancelacion_Motivo VARCHAR(255),
@@ -409,13 +409,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaFacturas
+CREATE PROCEDURE DATACORE.CrearTablaFacturas
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Facturas', 'U') IS NOT NULL DROP TABLE DataCore.Facturas;
-        CREATE TABLE DataCore.Facturas (
+        IF OBJECT_ID('DATACORE.Facturas', 'U') IS NOT NULL DROP TABLE DATACORE.Facturas;
+        CREATE TABLE DATACORE.Facturas (
             Factura_Numero BIGINT NOT NULL,
             Factura_Fecha DATETIME2(6),
             Factura_Total DECIMAL(38,2),
@@ -431,13 +431,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaDetallesFacturas
+CREATE PROCEDURE DATACORE.CrearTablaDetallesFacturas
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Detalles_Facturas', 'U') IS NOT NULL DROP TABLE DataCore.Detalles_Facturas;
-        CREATE TABLE DataCore.Detalles_Facturas (
+        IF OBJECT_ID('DATACORE.Detalles_Facturas', 'U') IS NOT NULL DROP TABLE DATACORE.Detalles_Facturas;
+        CREATE TABLE DATACORE.Detalles_Facturas (
             Factura_Numero BIGINT NOT NULL,
             Sillon_Codigo BIGINT NOT NULL,
 			Pedido_Numero BIGINT NOT NULL,  
@@ -454,13 +454,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE DataCore.CrearTablaEnvios
+CREATE PROCEDURE DATACORE.CrearTablaEnvios
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION
-        IF OBJECT_ID('DataCore.Envios', 'U') IS NOT NULL DROP TABLE DataCore.Envios;
-        CREATE TABLE DataCore.Envios (
+        IF OBJECT_ID('DATACORE.Envios', 'U') IS NOT NULL DROP TABLE DATACORE.Envios;
+        CREATE TABLE DATACORE.Envios (
             Envio_Numero BIGINT NOT NULL,
             Envio_Fecha_Programada DATETIME2(6),
             Envio_Fecha DATETIME2(6),
@@ -497,32 +497,32 @@ GO
 CREATE PROCEDURE DATACORE.CrearTodasLasTablas
 AS
 BEGIN
-    EXEC DataCore.CrearTablaProvincias;
-    EXEC DataCore.CrearTablaLocalidades;
-    EXEC DataCore.CrearTablaMedidas;
-    EXEC DataCore.CrearTablaModelosSillones;
-    EXEC DataCore.CrearTablaTipoMateriales;
-    EXEC DataCore.CrearTablaProveedores;
-    EXEC DataCore.CrearTablaSucursales;
-    EXEC DataCore.CrearTablaClientes;
-    EXEC DataCore.CrearTablaMateriales;
-    EXEC DataCore.CrearTablaTelas;
-    EXEC DataCore.CrearTablaMaderas;
-    EXEC DataCore.CrearTablaRellenos;
-    EXEC DataCore.CrearTablaSillones;
-    EXEC DataCore.CrearTablaMaterialesSillones;
-    EXEC DataCore.CrearTablaCompras;
-    EXEC DataCore.CrearTablaDetallesCompras;
-    EXEC DataCore.CrearTablaPedidos;
-    EXEC DataCore.CrearTablaDetallesPedidos;
-    EXEC DataCore.CrearTablaPedidosCancelacion;
-    EXEC DataCore.CrearTablaFacturas;
-    EXEC DataCore.CrearTablaDetallesFacturas;
-    EXEC DataCore.CrearTablaEnvios;
+    EXEC DATACORE.CrearTablaProvincias;
+    EXEC DATACORE.CrearTablaLocalidades;
+    EXEC DATACORE.CrearTablaMedidas;
+    EXEC DATACORE.CrearTablaModelosSillones;
+    EXEC DATACORE.CrearTablaTipoMateriales;
+    EXEC DATACORE.CrearTablaProveedores;
+    EXEC DATACORE.CrearTablaSucursales;
+    EXEC DATACORE.CrearTablaClientes;
+    EXEC DATACORE.CrearTablaMateriales;
+    EXEC DATACORE.CrearTablaTelas;
+    EXEC DATACORE.CrearTablaMaderas;
+    EXEC DATACORE.CrearTablaRellenos;
+    EXEC DATACORE.CrearTablaSillones;
+    EXEC DATACORE.CrearTablaMaterialesSillones;
+    EXEC DATACORE.CrearTablaCompras;
+    EXEC DATACORE.CrearTablaDetallesCompras;
+    EXEC DATACORE.CrearTablaPedidos;
+    EXEC DATACORE.CrearTablaDetallesPedidos;
+    EXEC DATACORE.CrearTablaPedidosCancelacion;
+    EXEC DATACORE.CrearTablaFacturas;
+    EXEC DATACORE.CrearTablaDetallesFacturas;
+    EXEC DATACORE.CrearTablaEnvios;
 END
 GO
         
-EXEC DataCore.CrearTodasLasTablas
+EXEC DATACORE.CrearTodasLasTablas
 
 GO
 
@@ -541,28 +541,28 @@ GO
 
 
 -- Constraints para PKs
-ALTER TABLE DataCore.Localidades ADD CONSTRAINT PK_Localidades PRIMARY KEY (Localidad_Id);
-ALTER TABLE DataCore.Provincias ADD CONSTRAINT PK_Provincias PRIMARY KEY (Provincia_Id);
-ALTER TABLE DataCore.Medidas ADD CONSTRAINT PK_Medidas PRIMARY KEY (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad);
-ALTER TABLE DataCore.Modelos_de_Sillones ADD CONSTRAINT PK_Modelos_Sillones PRIMARY KEY (Sillon_Modelo_Codigo);
-ALTER TABLE DataCore.TipoMateriales ADD CONSTRAINT PK_TipoMateriales PRIMARY KEY (TipoMaterial_Id);
-ALTER TABLE DataCore.Proveedores ADD CONSTRAINT PK_Proveedores PRIMARY KEY (Proveedor_Cuit);
-ALTER TABLE DataCore.Sucursales ADD CONSTRAINT PK_Sucursales PRIMARY KEY (Sucursal_NroSucursal);
-ALTER TABLE DataCore.Clientes ADD CONSTRAINT PK_Clientes PRIMARY KEY (Cliente_Dni);
-ALTER TABLE DataCore.Materiales ADD CONSTRAINT PK_Materiales PRIMARY KEY (Material_Id);
-ALTER TABLE DataCore.Telas ADD CONSTRAINT PK_Telas PRIMARY KEY (Material_Id);
-ALTER TABLE DataCore.Maderas ADD CONSTRAINT PK_Maderas PRIMARY KEY (Material_Id);
-ALTER TABLE DataCore.Rellenos ADD CONSTRAINT PK_Rellenos PRIMARY KEY (Material_Id);
-ALTER TABLE DataCore.Sillones ADD CONSTRAINT PK_Sillones PRIMARY KEY (Sillon_Codigo);
-ALTER TABLE DataCore.Materiales_Sillones ADD CONSTRAINT PK_Materiales_Sillones PRIMARY KEY (Material_Id, Sillon_Codigo);
-ALTER TABLE DataCore.Compras ADD CONSTRAINT PK_Compras PRIMARY KEY (Compra_Numero);
-ALTER TABLE DataCore.Detalles_Compras ADD CONSTRAINT PK_Detalles_Compras PRIMARY KEY (Compra_Numero, Material_Id);
-ALTER TABLE DataCore.Pedidos ADD CONSTRAINT PK_Pedidos PRIMARY KEY (Pedido_Numero);
-ALTER TABLE DataCore.Detalles_Pedidos ADD CONSTRAINT PK_Detalles_Pedidos PRIMARY KEY (Pedido_Numero, Sillon_Codigo);
-ALTER TABLE DataCore.Pedidos_Cancelacion ADD CONSTRAINT PK_Pedidos_Cancelacion PRIMARY KEY (Pedido_Cancelacion_Num);
-ALTER TABLE DataCore.Facturas ADD CONSTRAINT PK_Facturas PRIMARY KEY (Factura_Numero);
-ALTER TABLE DataCore.Detalles_Facturas ADD CONSTRAINT PK_Detalles_Facturas PRIMARY KEY (Factura_Numero, Pedido_Numero, Sillon_Codigo);
-ALTER TABLE DataCore.Envios ADD CONSTRAINT PK_Envios PRIMARY KEY (Envio_Numero);
+ALTER TABLE DATACORE.Localidades ADD CONSTRAINT PK_Localidades PRIMARY KEY (Localidad_Id);
+ALTER TABLE DATACORE.Provincias ADD CONSTRAINT PK_Provincias PRIMARY KEY (Provincia_Id);
+ALTER TABLE DATACORE.Medidas ADD CONSTRAINT PK_Medidas PRIMARY KEY (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad);
+ALTER TABLE DATACORE.Modelos_de_Sillones ADD CONSTRAINT PK_Modelos_Sillones PRIMARY KEY (Sillon_Modelo_Codigo);
+ALTER TABLE DATACORE.TipoMateriales ADD CONSTRAINT PK_TipoMateriales PRIMARY KEY (TipoMaterial_Id);
+ALTER TABLE DATACORE.Proveedores ADD CONSTRAINT PK_Proveedores PRIMARY KEY (Proveedor_Cuit);
+ALTER TABLE DATACORE.Sucursales ADD CONSTRAINT PK_Sucursales PRIMARY KEY (Sucursal_NroSucursal);
+ALTER TABLE DATACORE.Clientes ADD CONSTRAINT PK_Clientes PRIMARY KEY (Cliente_Dni);
+ALTER TABLE DATACORE.Materiales ADD CONSTRAINT PK_Materiales PRIMARY KEY (Material_Id);
+ALTER TABLE DATACORE.Telas ADD CONSTRAINT PK_Telas PRIMARY KEY (Material_Id);
+ALTER TABLE DATACORE.Maderas ADD CONSTRAINT PK_Maderas PRIMARY KEY (Material_Id);
+ALTER TABLE DATACORE.Rellenos ADD CONSTRAINT PK_Rellenos PRIMARY KEY (Material_Id);
+ALTER TABLE DATACORE.Sillones ADD CONSTRAINT PK_Sillones PRIMARY KEY (Sillon_Codigo);
+ALTER TABLE DATACORE.Materiales_Sillones ADD CONSTRAINT PK_Materiales_Sillones PRIMARY KEY (Material_Id, Sillon_Codigo);
+ALTER TABLE DATACORE.Compras ADD CONSTRAINT PK_Compras PRIMARY KEY (Compra_Numero);
+ALTER TABLE DATACORE.Detalles_Compras ADD CONSTRAINT PK_Detalles_Compras PRIMARY KEY (Compra_Numero, Material_Id);
+ALTER TABLE DATACORE.Pedidos ADD CONSTRAINT PK_Pedidos PRIMARY KEY (Pedido_Numero);
+ALTER TABLE DATACORE.Detalles_Pedidos ADD CONSTRAINT PK_Detalles_Pedidos PRIMARY KEY (Pedido_Numero, Sillon_Codigo);
+ALTER TABLE DATACORE.Pedidos_Cancelacion ADD CONSTRAINT PK_Pedidos_Cancelacion PRIMARY KEY (Pedido_Cancelacion_Num);
+ALTER TABLE DATACORE.Facturas ADD CONSTRAINT PK_Facturas PRIMARY KEY (Factura_Numero);
+ALTER TABLE DATACORE.Detalles_Facturas ADD CONSTRAINT PK_Detalles_Facturas PRIMARY KEY (Factura_Numero, Pedido_Numero, Sillon_Codigo);
+ALTER TABLE DATACORE.Envios ADD CONSTRAINT PK_Envios PRIMARY KEY (Envio_Numero);
 GO
 
 
@@ -576,78 +576,78 @@ GO
 
 
 -- Constraints para FKs
-ALTER TABLE DataCore.Proveedores
-ADD CONSTRAINT FK_Proveedores_Localidades FOREIGN KEY (Localidad_Id) REFERENCES DataCore.Localidades(Localidad_Id);
+ALTER TABLE DATACORE.Proveedores
+ADD CONSTRAINT FK_Proveedores_Localidades FOREIGN KEY (Localidad_Id) REFERENCES DATACORE.Localidades(Localidad_Id);
 
-ALTER TABLE DataCore.Sucursales
-ADD CONSTRAINT FK_Sucursales_Localidades FOREIGN KEY (Localidad_Id) REFERENCES DataCore.Localidades(Localidad_Id);
+ALTER TABLE DATACORE.Sucursales
+ADD CONSTRAINT FK_Sucursales_Localidades FOREIGN KEY (Localidad_Id) REFERENCES DATACORE.Localidades(Localidad_Id);
 
-ALTER TABLE DataCore.Clientes
-ADD CONSTRAINT FK_Clientes_Localidades FOREIGN KEY (Localidad_Id) REFERENCES DataCore.Localidades(Localidad_Id);
+ALTER TABLE DATACORE.Clientes
+ADD CONSTRAINT FK_Clientes_Localidades FOREIGN KEY (Localidad_Id) REFERENCES DATACORE.Localidades(Localidad_Id);
 
-ALTER TABLE DataCore.Materiales
-ADD CONSTRAINT FK_Materiales_TipoMateriales FOREIGN KEY (TipoMaterial_Id) REFERENCES DataCore.TipoMateriales(TipoMaterial_Id);
+ALTER TABLE DATACORE.Materiales
+ADD CONSTRAINT FK_Materiales_TipoMateriales FOREIGN KEY (TipoMaterial_Id) REFERENCES DATACORE.TipoMateriales(TipoMaterial_Id);
 
-ALTER TABLE DataCore.Telas
-ADD CONSTRAINT FK_Telas_Materiales FOREIGN KEY (Material_Id) REFERENCES DataCore.Materiales(Material_Id);
+ALTER TABLE DATACORE.Telas
+ADD CONSTRAINT FK_Telas_Materiales FOREIGN KEY (Material_Id) REFERENCES DATACORE.Materiales(Material_Id);
 
-ALTER TABLE DataCore.Maderas
-ADD CONSTRAINT FK_Maderas_Materiales FOREIGN KEY (Material_Id) REFERENCES DataCore.Materiales(Material_Id);
+ALTER TABLE DATACORE.Maderas
+ADD CONSTRAINT FK_Maderas_Materiales FOREIGN KEY (Material_Id) REFERENCES DATACORE.Materiales(Material_Id);
 
-ALTER TABLE DataCore.Rellenos
-ADD CONSTRAINT FK_Rellenos_Materiales FOREIGN KEY (Material_Id) REFERENCES DataCore.Materiales(Material_Id);
+ALTER TABLE DATACORE.Rellenos
+ADD CONSTRAINT FK_Rellenos_Materiales FOREIGN KEY (Material_Id) REFERENCES DATACORE.Materiales(Material_Id);
 
-ALTER TABLE DataCore.Sillones
-ADD CONSTRAINT FK_Sillones_Medidas FOREIGN KEY (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad) REFERENCES DataCore.Medidas(Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad);
-ALTER TABLE DataCore.Sillones
-ADD CONSTRAINT FK_Sillones_Modelos FOREIGN KEY (Sillon_Modelo_Codigo) REFERENCES DataCore.Modelos_de_Sillones(Sillon_Modelo_Codigo);
+ALTER TABLE DATACORE.Sillones
+ADD CONSTRAINT FK_Sillones_Medidas FOREIGN KEY (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad) REFERENCES DATACORE.Medidas(Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad);
+ALTER TABLE DATACORE.Sillones
+ADD CONSTRAINT FK_Sillones_Modelos FOREIGN KEY (Sillon_Modelo_Codigo) REFERENCES DATACORE.Modelos_de_Sillones(Sillon_Modelo_Codigo);
 
-ALTER TABLE DataCore.Materiales_Sillones
-ADD CONSTRAINT FK_MaterialesSillones_Materiales FOREIGN KEY (Material_Id) REFERENCES DataCore.Materiales(Material_Id);
-ALTER TABLE DataCore.Materiales_Sillones
-ADD CONSTRAINT FK_MaterialesSillones_Sillones FOREIGN KEY (Sillon_Codigo) REFERENCES DataCore.Sillones(Sillon_Codigo);
+ALTER TABLE DATACORE.Materiales_Sillones
+ADD CONSTRAINT FK_MaterialesSillones_Materiales FOREIGN KEY (Material_Id) REFERENCES DATACORE.Materiales(Material_Id);
+ALTER TABLE DATACORE.Materiales_Sillones
+ADD CONSTRAINT FK_MaterialesSillones_Sillones FOREIGN KEY (Sillon_Codigo) REFERENCES DATACORE.Sillones(Sillon_Codigo);
 
-ALTER TABLE DataCore.Compras
-ADD CONSTRAINT FK_Compras_Sucursales FOREIGN KEY (Sucursal_NroSucursal) REFERENCES DataCore.Sucursales(Sucursal_NroSucursal);
-ALTER TABLE DataCore.Compras
-ADD CONSTRAINT FK_Compras_Proveedores FOREIGN KEY (Proveedor_Cuit) REFERENCES DataCore.Proveedores(Proveedor_Cuit);
+ALTER TABLE DATACORE.Compras
+ADD CONSTRAINT FK_Compras_Sucursales FOREIGN KEY (Sucursal_NroSucursal) REFERENCES DATACORE.Sucursales(Sucursal_NroSucursal);
+ALTER TABLE DATACORE.Compras
+ADD CONSTRAINT FK_Compras_Proveedores FOREIGN KEY (Proveedor_Cuit) REFERENCES DATACORE.Proveedores(Proveedor_Cuit);
 
-ALTER TABLE DataCore.Detalles_Compras
-ADD CONSTRAINT FK_DetallesCompras_Compras FOREIGN KEY (Compra_Numero) REFERENCES DataCore.Compras(Compra_Numero);
-ALTER TABLE DataCore.Detalles_Compras
-ADD CONSTRAINT FK_DetallesCompras_Materiales FOREIGN KEY (Material_Id) REFERENCES DataCore.Materiales(Material_Id);
+ALTER TABLE DATACORE.Detalles_Compras
+ADD CONSTRAINT FK_DetallesCompras_Compras FOREIGN KEY (Compra_Numero) REFERENCES DATACORE.Compras(Compra_Numero);
+ALTER TABLE DATACORE.Detalles_Compras
+ADD CONSTRAINT FK_DetallesCompras_Materiales FOREIGN KEY (Material_Id) REFERENCES DATACORE.Materiales(Material_Id);
 
-ALTER TABLE DataCore.Pedidos
-ADD CONSTRAINT FK_Pedidos_Sucursales FOREIGN KEY (Sucursal_NroSucursal) REFERENCES DataCore.Sucursales(Sucursal_NroSucursal);
-ALTER TABLE DataCore.Pedidos
-ADD CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (Cliente_Dni) REFERENCES DataCore.Clientes(Cliente_Dni);
+ALTER TABLE DATACORE.Pedidos
+ADD CONSTRAINT FK_Pedidos_Sucursales FOREIGN KEY (Sucursal_NroSucursal) REFERENCES DATACORE.Sucursales(Sucursal_NroSucursal);
+ALTER TABLE DATACORE.Pedidos
+ADD CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (Cliente_Dni) REFERENCES DATACORE.Clientes(Cliente_Dni);
 
-ALTER TABLE DataCore.Detalles_Pedidos
-ADD CONSTRAINT FK_DetallesPedidos_Pedidos FOREIGN KEY (Pedido_Numero) REFERENCES DataCore.Pedidos(Pedido_Numero);
-ALTER TABLE DataCore.Detalles_Pedidos
-ADD CONSTRAINT FK_DetallesPedidos_Sillones FOREIGN KEY (Sillon_Codigo) REFERENCES DataCore.Sillones(Sillon_Codigo);
+ALTER TABLE DATACORE.Detalles_Pedidos
+ADD CONSTRAINT FK_DetallesPedidos_Pedidos FOREIGN KEY (Pedido_Numero) REFERENCES DATACORE.Pedidos(Pedido_Numero);
+ALTER TABLE DATACORE.Detalles_Pedidos
+ADD CONSTRAINT FK_DetallesPedidos_Sillones FOREIGN KEY (Sillon_Codigo) REFERENCES DATACORE.Sillones(Sillon_Codigo);
 
-ALTER TABLE DataCore.Pedidos_Cancelacion
-ADD CONSTRAINT FK_PedidosCancelacion_Pedidos FOREIGN KEY (Pedido_Numero) REFERENCES DataCore.Pedidos(Pedido_Numero);
+ALTER TABLE DATACORE.Pedidos_Cancelacion
+ADD CONSTRAINT FK_PedidosCancelacion_Pedidos FOREIGN KEY (Pedido_Numero) REFERENCES DATACORE.Pedidos(Pedido_Numero);
 
-ALTER TABLE DataCore.Facturas
-ADD CONSTRAINT FK_Facturas_Clientes FOREIGN KEY (Cliente_Dni) REFERENCES DataCore.Clientes(Cliente_Dni);
-ALTER TABLE DataCore.Facturas
-ADD CONSTRAINT FK_Facturas_Sucursales FOREIGN KEY (Sucursal_NroSucursal) REFERENCES DataCore.Sucursales(Sucursal_NroSucursal);
+ALTER TABLE DATACORE.Facturas
+ADD CONSTRAINT FK_Facturas_Clientes FOREIGN KEY (Cliente_Dni) REFERENCES DATACORE.Clientes(Cliente_Dni);
+ALTER TABLE DATACORE.Facturas
+ADD CONSTRAINT FK_Facturas_Sucursales FOREIGN KEY (Sucursal_NroSucursal) REFERENCES DATACORE.Sucursales(Sucursal_NroSucursal);
 
-ALTER TABLE DataCore.Detalles_Facturas
-ADD CONSTRAINT FK_DetallesFacturas_Facturas FOREIGN KEY (Factura_Numero) REFERENCES DataCore.Facturas(Factura_Numero);
-ALTER TABLE DataCore.Detalles_Facturas
-ADD CONSTRAINT FK_DetallesFacturas_Pedidos FOREIGN KEY (Pedido_Numero) REFERENCES DataCore.Pedidos(Pedido_Numero);
-ALTER TABLE DataCore.Detalles_Facturas
-ADD CONSTRAINT FK_DetallesFacturas_Sillones FOREIGN KEY (Sillon_Codigo) REFERENCES DataCore.Sillones(Sillon_Codigo);
+ALTER TABLE DATACORE.Detalles_Facturas
+ADD CONSTRAINT FK_DetallesFacturas_Facturas FOREIGN KEY (Factura_Numero) REFERENCES DATACORE.Facturas(Factura_Numero);
+ALTER TABLE DATACORE.Detalles_Facturas
+ADD CONSTRAINT FK_DetallesFacturas_Pedidos FOREIGN KEY (Pedido_Numero) REFERENCES DATACORE.Pedidos(Pedido_Numero);
+ALTER TABLE DATACORE.Detalles_Facturas
+ADD CONSTRAINT FK_DetallesFacturas_Sillones FOREIGN KEY (Sillon_Codigo) REFERENCES DATACORE.Sillones(Sillon_Codigo);
 
-ALTER TABLE DataCore.Envios
-ADD CONSTRAINT FK_Envios_Facturas FOREIGN KEY (Factura_Numero) REFERENCES DataCore.Facturas(Factura_Numero);
+ALTER TABLE DATACORE.Envios
+ADD CONSTRAINT FK_Envios_Facturas FOREIGN KEY (Factura_Numero) REFERENCES DATACORE.Facturas(Factura_Numero);
 GO
 
-ALTER TABLE DataCore.Localidades
-ADD CONSTRAINT FK_LOCALIDADO_PROVINCIA FOREIGN KEY (Provincia_Id) REFERENCES DataCore.Provincias(Provincia_Id);
+ALTER TABLE DATACORE.Localidades
+ADD CONSTRAINT FK_LOCALIDADO_PROVINCIA FOREIGN KEY (Provincia_Id) REFERENCES DATACORE.Provincias(Provincia_Id);
 
 
 GO
@@ -825,7 +825,7 @@ EXEC DATACORE.ImportarMateriales
 GO
 
 -- 							MEDIDAS
-INSERT INTO DataCore.Medidas (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Medida_Precio)
+INSERT INTO DATACORE.Medidas (Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Medida_Precio)
 SELECT DISTINCT Sillon_Medida_Alto, Sillon_Medida_Ancho, Sillon_Medida_Profundidad, Sillon_Medida_Precio FROM gd_esquema.Maestra
 WHERE Sillon_Medida_Alto IS NOT NULL AND Sillon_Medida_Ancho IS NOT NULL AND Sillon_Medida_Profundidad IS NOT NULL;
 GO
@@ -845,7 +845,7 @@ GO
 
 
 --									DETALLE COMPRAS
-INSERT INTO DataCore.Detalles_Compras (Compra_Numero, Material_Id, Detalle_Compra_Cantidad, Detalle_Compra_Precio, Detalle_Compra_Subtotal)
+INSERT INTO DATACORE.Detalles_Compras (Compra_Numero, Material_Id, Detalle_Compra_Cantidad, Detalle_Compra_Precio, Detalle_Compra_Subtotal)
 SELECT DISTINCT 
     m.Compra_Numero,
     mat.Material_Id,
@@ -853,7 +853,7 @@ SELECT DISTINCT
     m.Detalle_Compra_Precio,
     m.Detalle_Compra_SubTotal
 FROM gd_esquema.Maestra m
-INNER JOIN DataCore.Materiales mat 
+INNER JOIN DATACORE.Materiales mat 
     ON mat.Material_Nombre = m.Material_Nombre
     AND mat.Material_Descripcion = m.Material_Descripcion
     AND mat.Material_Precio = m.Material_Precio
@@ -864,8 +864,8 @@ WHERE
 GO
 
 -- 								PEDIDOS
-INSERT INTO DATACORE.Pedidos(Pedido_Numero, Pedido_Fecha, Pedido_Total, Sucursal_NroSucursal, Cliente_Dni)
-SELECT DISTINCT  Pedido_Numero, Pedido_Fecha, Pedido_Total, s.Sucursal_NroSucursal, c.Cliente_Dni 
+INSERT INTO DATACORE.Pedidos(Pedido_Estado, Pedido_Numero, Pedido_Fecha, Pedido_Total, Sucursal_NroSucursal, Cliente_Dni)
+SELECT DISTINCT  Pedido_Estado, Pedido_Numero, Pedido_Total, s.Sucursal_NroSucursal, c.Cliente_Dni 
 FROM gd_esquema.Maestra m 
 INNER JOIN DATACORE.Clientes c ON m.Cliente_Dni = c.Cliente_Dni
 INNER JOIN DATACORE.Sucursales s ON m.Sucursal_NroSucursal = s.Sucursal_NroSucursal
@@ -876,7 +876,7 @@ GO
 -- 								PEDIDOS CANCELACION
 
 
-INSERT INTO DataCore.Pedidos_Cancelacion (Pedido_Cancelacion_Fecha, Pedido_Cancelacion_Motivo, Pedido_Numero)
+INSERT INTO DATACORE.Pedidos_Cancelacion (Pedido_Cancelacion_Fecha, Pedido_Cancelacion_Motivo, Pedido_Numero)
 SELECT DISTINCT Pedido_Cancelacion_Fecha, Pedido_Cancelacion_Motivo, p.Pedido_Numero
 FROM gd_esquema.Maestra m
 INNER JOIN DATACORE.PEDIDOS p ON m.Pedido_Numero = p.Pedido_Numero
@@ -904,7 +904,7 @@ WHERE Sillon_Codigo IS NOT NULL
 GO
 
 --			ENVIOS   (Este debe ir luego de facturas)
-INSERT INTO DataCore.Envios (
+INSERT INTO DATACORE.Envios (
     Envio_Numero,
     Envio_Fecha_Programada,
     Envio_Fecha,
@@ -961,7 +961,7 @@ INNER JOIN
 	(
 	SELECT Pedido_Numero, Sillon_Codigo, Detalle_Pedido_Cantidad, Detalle_Pedido_Precio, Detalle_Pedido_SubTotal
 	FROM gd_esquema.Maestra
-	WHERE Pedido_Numero IS NOT NULL OR Factura_Numero IS NOT NULL
+	WHERE Pedido_Numero IS NOT NULL
 	) b
 
 ON a.Pedido_Numero = b.Pedido_Numero AND a.Detalle_Factura_SubTotal = b.Detalle_Pedido_SubTotal AND a.Detalle_Factura_Precio = b.Detalle_Pedido_Precio AND a.Detalle_Factura_Cantidad = b.Detalle_Pedido_Cantidad
@@ -973,4 +973,3 @@ WHERE Sillon_Codigo IS NOT NULL
 ORDER BY a.Factura_Numero, b.Sillon_Codigo, a.Pedido_Numero, Detalle_Factura_Cantidad ,Detalle_Factura_Precio, Detalle_Factura_SubTotal
 
 GO
-
