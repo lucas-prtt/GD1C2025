@@ -11,7 +11,7 @@ CREATE TABLE DATACORE.BI_Dimension_Sucursales (
     Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
     Sucursal_NroSucursal BIGINT,
     Sucursal_telefono NVARCHAR(255),
-    Sucursal_Direccionc NVARCHAR(255)
+    Sucursal_Direccion NVARCHAR(255)
 );
 
 CREATE TABLE DATACORE.BI_Dimension_Ubicacion (
