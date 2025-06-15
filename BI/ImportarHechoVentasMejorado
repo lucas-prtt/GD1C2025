@@ -1,0 +1,106 @@
+CREATE PROCEDURE DATACORE.Importar_Hechos_Ventas
+AS 
+BEGIN
+SELECT f.Factura_Fecha AS FacturaFecha, 
+	c.Cliente_FechaNacimiento AS FechaNacimiento, 
+	su.Sucursal_NroSucursal AS NroSucursal, 
+	Sucursal_Telefono AS Telefono,
+	Sucursal_Direccion AS Direccion,
+	Sucursal_Mail AS Mail, 
+	s.Sillon_Modelo_Codigo AS ModeloCodigo,
+	Sillon_Modelo_Descripcion AS ModeloDescripcion, 
+	Sillon_Modelo_Precio AS ModeloPrecio,
+	Sillon_Modelo AS Modelo, 
+	c.Localidad_Id AS LocalidadIDCliente, 
+	lc.Provincia_Id AS ProvinciaIDCliente, 
+	lc.Localidad_Nombre AS LocalidadNombreCliente, 
+	pc.Provincia_Nombre AS ProvinciaNombreCliente, 
+	su.Localidad_Id AS LocalidadIDSucursal, 
+	lsu.Provincia_Id AS ProvinciaIDSucursal, 
+	lsu.Localidad_Nombre AS LocalidadNombreSucursal,
+	psu.Provincia_Nombre AS ProvinciaNombreSucursal, 
+	f.Factura_Numero AS FacturaNumero, 
+	dt.Pedido_Numero AS Pedidonumero, 
+	dt.Detalle_Factura_Cantidad AS Cantidad,
+	dt.Detalle_Factura_Precio AS Precio, 
+	DATACORE.RangoEtario(f.Factura_Fecha, c.Cliente_FechaNacimiento) AS RangoEtario
+	INTO #TempVentas
+	FROM DATACORE.Detalles_Facturas dt
+	INNER JOIN DATACORE.Facturas f ON f.Factura_Numero = dt.Factura_Numero
+	INNER JOIN DATACORE.Clientes c ON f.Cliente_Dni = c.Cliente_Dni
+	INNER JOIN DATACORE.Sillones s ON s.Sillon_Codigo = dt.Sillon_Codigo
+	INNER JOIN DATACORE.Modelos_De_Sillones m ON s.Sillon_Modelo_Codigo = m.Sillon_Modelo_Codigo
+	INNER JOIN DATACORE.Localidades lc ON c.Localidad_Id = lc.Localidad_Id
+	INNER JOIN DATACORE.Sucursales su ON f.Sucursal_NroSucursal = su.Sucursal_NroSucursal
+	INNER JOIN DATACORE.Localidades lsu ON lsu.Localidad_Id = su.Localidad_Id
+	INNER JOIN DATACORE.Provincias psu ON lsu.Provincia_Id = psu.Provincia_Id
+	INNER JOIN DATACORE.Provincias pc ON lc.Provincia_Id = pc.Provincia_Id
+SELECT FacturaFecha,
+	MONTH(FacturaFecha) AS MF, 
+	YEAR(FacturaFecha) AS YF, 
+	DATEPART(QUARTER, FacturaFecha) AS QF, 
+	DATACORE.Turno(FacturaFecha) AS TF
+INTO #TempTiempos
+FROM #TempVentas
+
+MERGE DATACORE.BI_Dimension_Ubicacion AS vieja
+USING (SELECT DISTINCT LocalidadIDCliente, ProvinciaIDCliente, LocalidadNombreCliente, ProvinciaNombreCliente FROM #TempVentas) AS nueva
+ON vieja.Localidad_ID = nueva.LocalidadIDCliente AND vieja.Provincia_ID = nueva.ProvinciaIDCliente
+WHEN NOT MATCHED THEN
+INSERT (Localidad_ID, Provincia_ID, Localidad, Provincia) VALUES (nueva.LocalidadIDCliente, nueva.ProvinciaIDCliente, nueva.LocalidadNombreCliente, nueva.ProvinciaNombreCliente);
+
+MERGE DATACORE.BI_Dimension_Ubicacion AS vieja
+USING (SELECT DISTINCT LocalidadIDSucursal, ProvinciaIDSucursal, LocalidadNombreSucursal, ProvinciaNombreSucursal FROM #TempVentas) AS nueva
+ON vieja.Localidad_ID = nueva.LocalidadIDSucursal AND vieja.Provincia_ID = nueva.ProvinciaIDSucursal
+WHEN NOT MATCHED THEN
+INSERT (Localidad_ID, Provincia_ID, Localidad, Provincia) VALUES (nueva.LocalidadIDSucursal, nueva.ProvinciaIDSucursal, nueva.LocalidadNombreSucursal, nueva.ProvinciaNombreSucursal);
+
+MERGE DATACORE.BI_Dimension_Tiempo AS vieja
+USING (SELECT DISTINCT YF, MF, QF FROM #TempTiempos) AS nueva
+ON vieja.Anio = nueva.YF AND vieja.Mes = nueva.MF AND vieja.Cuatrimestre = nueva.QF
+WHEN NOT MATCHED THEN
+INSERT (Anio, Mes, Cuatrimestre) VALUES (nueva.YF, nueva.MF, nueva.QF);
+
+MERGE DATACORE.BI_Dimension_Turno AS vieja
+USING (SELECT DISTINCT TF FROM #TempTiempos) AS nueva
+ON vieja.Horario = nueva.TF
+WHEN NOT MATCHED THEN
+INSERT (Horario) VALUES (nueva.TF);
+
+MERGE DATACORE.BI_Dimension_ModeloSillon AS vieja
+USING (SELECT DISTINCT ModeloCodigo, ModeloDescripcion, ModeloPrecio, Modelo FROM #TempVentas) AS nueva
+ON vieja.Sillon_Modelo_Codigo = nueva.ModeloCodigo
+WHEN NOT MATCHED THEN
+INSERT (Sillon_Modelo_Descripcion, Sillon_Modelo_Precio, Sillon_Modelo_Codigo, Sillon_Modelo) VALUES (nueva.ModeloDescripcion, nueva.ModeloPrecio, nueva.ModeloCodigo, nueva.Modelo);
+
+
+MERGE DATACORE.BI_Dimension_Sucursales AS vieja
+USING (SELECT DISTINCT NroSucursal, Telefono, Direccion, Mail  FROM #TempVentas) AS nueva
+ON vieja.Sucursal_NroSucursal = nueva.NroSucursal 
+WHEN NOT MATCHED THEN 
+INSERT (Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion , Sucursal_Mail)
+VALUES (NroSucursal, Telefono, Direccion, Mail );
+
+MERGE DATACORE.BI_Dimension_RangoEtario AS vieja
+USING (SELECT DISTINCT RangoEtario  FROM #TempVentas) AS nueva
+ON vieja.Rango_Etario_Descripcion = nueva.RangoEtario 
+WHEN NOT MATCHED THEN 
+INSERT (Rango_Etario_Descripcion )
+VALUES (RangoEtario );
+
+MERGE DATACORE.BI_Dimension_Factura AS vieja
+USING (SELECT DISTINCT FacturaNumero  FROM #TempVentas) AS nueva
+ON vieja.Factura_Numero = nueva.FacturaNumero 
+WHEN NOT MATCHED THEN 
+INSERT (Factura_Numero )
+VALUES (FacturaNumero );
+
+MERGE DATACORE.BI_Dimension_Pedido AS vieja
+USING (SELECT DISTINCT PedidoNumero  FROM #TempVentas) AS nueva
+ON vieja.Pedido_Numero = nueva.PedidoNumero 
+WHEN NOT MATCHED THEN 
+INSERT (Pedido_Numero )
+VALUES (PedidoNumero );
+
+
+END
