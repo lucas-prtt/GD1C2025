@@ -1,0 +1,18 @@
+CREATE FUNCTION DATACORE.RangoEtario(
+@FechaFactura DATETIME2, @FechaNacimientoCliente DATETIME2)
+RETURNS NVARCHAR(30)
+AS 
+BEGIN
+DECLARE @Resultado NVARCHAR(50);
+DECLARE @Diferencia INTEGER
+SET @Diferencia = DATEDIFF(YEAR, @FechaNacimientoCliente, @FechaFactura)
+IF @Diferencia < 25
+SET @Resultado = '<25'
+ELSE IF @Diferencia < 35
+SET @Resultado = '25-35'
+ELSE IF @Diferencia < 50
+SET @Resultado = '35-50'
+ELSE 
+SET @Resultado = '>50'
+RETURN @Resultado
+END
