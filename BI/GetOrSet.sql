@@ -66,7 +66,7 @@ GO
 CREATE PROCEDURE ObtenerOCrearSucursalID
     @Sucursal_NroSucursal BIGINT,
     @Sucursal_telefono NVARCHAR(255),
-    @Sucursal_Direccionc NVARCHAR(255),
+    @Sucursal_Direccion NVARCHAR(255),
     @Sucursal_ID BIGINT OUTPUT
 AS
 BEGIN
