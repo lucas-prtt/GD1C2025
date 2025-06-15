@@ -1,6 +1,7 @@
 
+
 -- UBICACION
-CREATE PROCEDURE ObtenerOCrearUbicacionID
+CREATE PROCEDURE DATACORE.ObtenerOCrearUbicacionID
     @Localidad_Id BIGINT,
     @Provincia_Id BIGINT,
 	@Localidad_Nombre NVARCHAR(255),
@@ -30,7 +31,7 @@ GO
 
 
 -- TIEMPO
-CREATE PROCEDURE ObtenerOCrearTiempoID
+CREATE PROCEDURE DATACORE.ObtenerOCrearTiempoID
     @Anio INT,
     @Cuatrimestre TINYINT,
     @Mes TINYINT,
@@ -63,7 +64,7 @@ GO
 
 
 -- SUCURSAL
-CREATE PROCEDURE ObtenerOCrearSucursalID
+CREATE PROCEDURE DATACORE.ObtenerOCrearSucursalID
     @Sucursal_NroSucursal BIGINT,
     @Sucursal_telefono NVARCHAR(255),
     @Sucursal_Direccion NVARCHAR(255),
@@ -90,7 +91,7 @@ GO
 
 
 --TIPOMATERIAL
-CREATE PROCEDURE ObtenerOCrearTipoMaterialID
+CREATE PROCEDURE DATACORE.ObtenerOCrearTipoMaterialID
     @TipoMaterial_Tipo NVARCHAR(255),
     @TipoMaterial_ID BIGINT OUTPUT
 AS
@@ -112,7 +113,7 @@ GO
 
 
 --TURNO
-CREATE PROCEDURE ObtenerOCrearTurnoID
+CREATE PROCEDURE DATACORE.ObtenerOCrearTurnoID
     @Horario NVARCHAR(255),
     @Dimension_Turno_ID BIGINT OUTPUT
 AS
@@ -133,7 +134,7 @@ GO
 
 
 -- RANGOETARIO
-CREATE PROCEDURE ObtenerOCrearRangoEtarioID
+CREATE PROCEDURE DATACORE.ObtenerOCrearRangoEtarioID
     @Rango_Etario_Descripcion NVARCHAR(255),
     @Rango_Etario_ID BIGINT  OUTPUT
 AS
@@ -153,7 +154,7 @@ GO
 
 
 -- MODELOSILLON
-CREATE PROCEDURE ObtenerOCrearModeloSillonID
+CREATE PROCEDURE DATACORE.ObtenerOCrearModeloSillonID
     @Sillon_Modelo_Codigo BIGINT,
     @Sillon_Modelo_Descripcion NVARCHAR(255),
     @Sillon_Modelo_Precio DECIMAL(18,2),
@@ -182,7 +183,7 @@ GO
 
 
 --ESTADOPEDIDO
-CREATE PROCEDURE ObtenerOCrearEstadoPedidoID
+CREATE PROCEDURE DATACORE.ObtenerOCrearEstadoPedidoID
     @Estado_Pedido_Desc NVARCHAR(255),
     @Estado_Pedido_ID BIGINT OUTPUT
 AS
@@ -202,7 +203,7 @@ GO
 
 
 --OC
-CREATE PROCEDURE ObtenerOCrearOrdenDeCompraID
+CREATE PROCEDURE DATACORE.ObtenerOCrearOrdenDeCompraID
     @Compra_Numero BIGINT,
     @Orden_De_Compra_ID BIGINT OUTPUT
 AS
@@ -221,7 +222,7 @@ GO
 
 
 -- FACTURA
-CREATE PROCEDURE ObtenerOCrearFacturaID
+CREATE PROCEDURE DATACORE.ObtenerOCrearFacturaID
     @Factura_Numero BIGINT,
     @Factura_ID BIGINT OUTPUT
 AS
