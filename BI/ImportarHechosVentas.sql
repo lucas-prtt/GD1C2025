@@ -47,7 +47,7 @@ FOR
 	INNER JOIN DATACORE.Modelos_De_Sillones m ON s.Sillon_Modelo_Codigo = m.Sillon_Modelo_Codigo
 	INNER JOIN DATACORE.Localidades lc ON c.Localidad_Id = lc.Localidad_Id
 	INNER JOIN DATACORE.Sucursales su ON f.Sucursal_NroSucursal = su.Sucursal_NroSucursal
-	INNER JOIN DATACORE.Localidades lsu ON lsu.Localidad_Id = lsu.Localidad_Id
+	INNER JOIN DATACORE.Localidades lsu ON lsu.Localidad_Id = su.Localidad_Id
 	INNER JOIN DATACORE.Provincias psu ON lsu.Provincia_Id = psu.Provincia_Id
 	INNER JOIN DATACORE.Provincias pc ON lc.Provincia_Id = pc.Provincia_Id
 
