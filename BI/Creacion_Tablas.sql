@@ -29,7 +29,7 @@ CREATE TABLE DATACORE.BI_Dimension_RangoEtario (
 );
 
 CREATE TABLE DATACORE.BI_Dimension_Turno (
-    Dimension_Turno_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Turno_ID BIGINT IDENTITY(1,1) NOT NULL,
     Horario NVARCHAR(255)
 );
 
