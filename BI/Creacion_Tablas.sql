@@ -77,6 +77,8 @@ CREATE TABLE DATACORE.BI_Hecho_Venta (
     Turno_ID BIGINT,
     Sillon_Modelo_ID BIGINT,
     Cantidad_Venta BIGINT,
+    Factura_ID BIGINT,
+    Pedido_ID BIGINT,
     Precio_Venta DECIMAL(18,2)
 );
 
@@ -143,6 +145,8 @@ ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_Turn
 ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_ModeloSillon FOREIGN KEY (Sillon_Modelo_ID) REFERENCES DATACORE.BI_Dimension_ModeloSillon(Sillon_Modelo_ID);
 ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_Sucursal FOREIGN KEY (Sucursal_ID) REFERENCES DATACORE.BI_Dimension_Sucursales(Sucursal_ID);
 ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_UbicacionSucursal FOREIGN KEY (Ubicacion_Sucursal_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
+ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_Factura FOREIGN KEY (Factura_ID) REFERENCES DATACORE.BI_Dimension_Factura(Factura_ID);
+ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_Pedido FOREIGN KEY (Pedido_ID) REFERENCES DATACORE.BI_Dimension_Pedido(Pedido_ID);
 
 -- Hecho_Peticion
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_Tiempo FOREIGN KEY (Tiempo_ID) REFERENCES DATACORE.BI_Dimension_Tiempo(Tiempo_ID);
