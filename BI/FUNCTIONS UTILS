@@ -16,3 +16,20 @@ ELSE
 SET @Resultado = '>50'
 RETURN @Resultado
 END
+GO
+CREATE FUNCTION DATACORE.Turno(
+@FechaFactura DATETIME2)
+RETURNS NVARCHAR(30)
+AS 
+BEGIN
+DECLARE @Resultado NVARCHAR(50);
+DECLARE @Hora Integer = DATEPART(HOUR, @FechaFactura)
+IF @Hora >= 8 AND @Hora <14
+SET @Resultado = '08:00 - 14:00'
+ELSE IF @Hora >= 14 AND @HORA <= 20
+SET @Resultado = '14:00 - 20:00'
+ELSE 
+SET @Resultado = 'Fuera de horario'
+RETURN @Resultado
+END
+GO
