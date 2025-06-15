@@ -238,3 +238,17 @@ BEGIN
     SELECT @Factura_ID = Factura_ID FROM @OUT;
 END
 
+-- PEDIDO
+CREATE PROCEDURE ObtenerOCrearPedidoID
+@Pedido_Numero BIGINT, @Pedido_ID BIGINT OUTPUT
+AS
+BEGIN
+DECLARE @OUT TABLE (Pedido_ID BIGINT);
+MERGE DATACORE.BI_Dimension_Pedido AS vieja
+USING (SELECT 
+@Pedido_Numero AS Pedido_Numero)AS nueva
+ON vieja.Pedido_Numero = nueva.Pedido_Numero
+WHEN NOT MATCHED THEN
+INSERT (Pedido_Numero)VALUES (nueva.Pedido_Numero) OUTPUT inserted.Pedido_ID INTO @OUT;
+SELECT @Pedido_ID = Pedido_ID FROM @OUT
+END
