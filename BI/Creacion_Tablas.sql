@@ -122,7 +122,7 @@ GO
 ALTER TABLE DATACORE.BI_Dimension_Tiempo ADD CONSTRAINT PK_Dimension_Tiempo PRIMARY KEY (Tiempo_ID);
 ALTER TABLE DATACORE.BI_Dimension_Ubicacion ADD CONSTRAINT PK_Dimension_Ubicacion PRIMARY KEY (Ubicacion_ID);
 ALTER TABLE DATACORE.BI_Dimension_RangoEtario ADD CONSTRAINT PK_Dimension_RangoEtario PRIMARY KEY (Rango_Etario_ID);
-ALTER TABLE DATACORE.BI_Dimension_Turno ADD CONSTRAINT PK_Dimension_Turno PRIMARY KEY (Dimension_Turno_ID);
+ALTER TABLE DATACORE.BI_Dimension_Turno ADD CONSTRAINT PK_Dimension_Turno PRIMARY KEY (Turno_ID);
 ALTER TABLE DATACORE.BI_Dimension_TipoMaterial ADD CONSTRAINT PK_Dimension_TipoMaterial PRIMARY KEY (TipoMaterial_ID);
 ALTER TABLE DATACORE.BI_Dimension_ModeloSillon ADD CONSTRAINT PK_Dimension_ModeloSillon PRIMARY KEY (Sillon_Modelo_ID);
 ALTER TABLE DATACORE.BI_Dimension_Estado_Pedido ADD CONSTRAINT PK_Dimension_Estado_Pedido PRIMARY KEY (Estado_Pedido_ID);
