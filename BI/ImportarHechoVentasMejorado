@@ -114,3 +114,5 @@ INNER JOIN DATACORE.BI_Dimension_Sucursales bis ON bis.Sucursal_NroSucursal = tv
 INNER JOIN DATACORE.BI_Dimension_RangoEtario bir ON bir.Rango_Etario_Descripcion = tv.RangoEtario
 INNER JOIN DATACORE.BI_Dimension_Pedido bip ON bip.Pedido_Numero = tv.Pedidonumero
 END
+GO
+SELECT * FROM DATACORE.BI_Hecho_Venta
