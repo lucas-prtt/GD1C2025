@@ -153,7 +153,7 @@ ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT FK_Hecho_Venta_Dimension_Pedi
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_Tiempo FOREIGN KEY (Tiempo_ID) REFERENCES DATACORE.BI_Dimension_Tiempo(Tiempo_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_RangoEtario FOREIGN KEY (Rango_Etario_Cliente_ID) REFERENCES DATACORE.BI_Dimension_RangoEtario(Rango_Etario_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_Sucursal FOREIGN KEY (Sucursal_ID) REFERENCES DATACORE.BI_Dimension_Sucursales(Sucursal_ID);
-ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_Turno FOREIGN KEY (Turno_ID) REFERENCES DATACORE.BI_Dimension_Turno(Dimension_Turno_ID);
+ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_Turno FOREIGN KEY (Turno_ID) REFERENCES DATACORE.BI_Dimension_Turno(Turno_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_EstadoPedido FOREIGN KEY (Estado_Pedido_ID) REFERENCES DATACORE.BI_Dimension_Estado_Pedido(Estado_Pedido_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_UbicacionCliente FOREIGN KEY (Ubicacion_Cliente_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Dimension_UbicacionSucursal FOREIGN KEY (Ubicacion_Sucursal_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
