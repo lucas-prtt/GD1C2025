@@ -76,12 +76,12 @@ BEGIN
         SELECT 
             @Sucursal_NroSucursal AS Sucursal_NroSucursal,
             @Sucursal_telefono AS Sucursal_telefono,
-            @Sucursal_Direccionc AS Sucursal_Direccionc
+            @Sucursal_Direccion AS Sucursal_Direccion
     ) AS nueva
     ON vieja.Sucursal_NroSucursal = nueva.Sucursal_NroSucursal
     WHEN NOT MATCHED THEN
-        INSERT (Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccionc)
-        VALUES (nueva.Sucursal_NroSucursal, nueva.Sucursal_telefono, nueva.Sucursal_Direccionc)
+        INSERT (Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion)
+        VALUES (nueva.Sucursal_NroSucursal, nueva.Sucursal_telefono, nueva.Sucursal_Direccion)
     OUTPUT inserted.Sucursal_ID INTO @OUT;
     SELECT @Sucursal_ID = Sucursal_ID FROM @OUT;
 END
@@ -236,5 +236,4 @@ BEGIN
     OUTPUT inserted.Factura_ID INTO @OUT;
     SELECT @Factura_ID = Factura_ID FROM @OUT;
 END
-
 
