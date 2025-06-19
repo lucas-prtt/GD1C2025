@@ -18,9 +18,7 @@ CREATE TABLE DATACORE.BI_Dimension_Sucursales (
 CREATE TABLE DATACORE.BI_Dimension_Ubicacion (
     Ubicacion_ID BIGINT IDENTITY(1,1) NOT NULL,
     Provincia NVARCHAR(255),
-    Localidad NVARCHAR(255),
-    Localidad_ID BIGINT,
-    Provincia_ID BIGINT
+    Localidad NVARCHAR(255)
 );
 
 CREATE TABLE DATACORE.BI_Dimension_RangoEtario (
@@ -70,50 +68,48 @@ CREATE TABLE DATACORE.BI_Dimension_Pedido (
 
 CREATE TABLE DATACORE.BI_Hecho_Venta (
     Venta_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Tiempo_ID BIGINT,
-    Sucursal_ID BIGINT,
-    Ubicacion_Cliente_ID BIGINT,
-    Ubicacion_Sucursal_ID BIGINT,
-    Rango_Etario_Cliente_ID BIGINT,
-    Turno_ID BIGINT,
-    Sillon_Modelo_ID BIGINT,
+    Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Rango_Etario_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Turno_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Sillon_Modelo_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Factura_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Pedido_ID BIGINT IDENTITY(1,1) NOT NULL,
     Cantidad_Venta BIGINT,
-    Factura_ID BIGINT,
-    Pedido_ID BIGINT,
     Precio_Venta DECIMAL(18,2)
 );
 
 CREATE TABLE DATACORE.BI_Hecho_Compra (
-    Compra_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Tiempo_ID BIGINT,
-    Sucursal_ID BIGINT,
-    TipoMaterial_ID BIGINT,
-    Ubicacion_Proveedor_ID BIGINT,
-    Orden_De_Compra_ID BIGINT,
-    Ubicacion_Sucursal_ID BIGINT,
+    Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+    TipoMaterial_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Proveedor_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Orden_De_Compra_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
     Cantidad_Compra BIGINT,
     Precio_Compra DECIMAL(18,2)
 );
 
 CREATE TABLE DATACORE.BI_Hecho_Envio (
     Envio_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Tiempo_Programado_ID BIGINT,
-    Tiempo_Realizado_ID BIGINT,
-    Sucursal_ID BIGINT,
-    Factura_ID BIGINT,
+    Tiempo_Programado_ID BIGINT IDENTITY(1,1) NOT NULL, 
+    Tiempo_Realizado_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Destino_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Factura_ID BIGINT IDENTITY(1,1) NOT NULL,
     Costo_Envio DECIMAL(18,2)
 );
 
 CREATE TABLE DATACORE.BI_Hecho_Peticion (
-    Peticion_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Tiempo_ID BIGINT,
-    Rango_Etario_Cliente_ID BIGINT,
-    Sucursal_ID BIGINT,
-    Turno_ID BIGINT,
-    Estado_Pedido_ID BIGINT,
-    Ubicacion_Cliente_ID BIGINT,
-    Ubicacion_Sucursal_ID BIGINT,
-    Pedido_ID BIGINT,
+    Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Rango_Etario_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL, 
+    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Turno_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Estado_Pedido_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Ubicacion_Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
     Costo_Peticion DECIMAL(18,2)
 );
 
@@ -131,11 +127,6 @@ ALTER TABLE DATACORE.BI_Dimension_Orden_De_Compra ADD CONSTRAINT PK_Dimension_Or
 ALTER TABLE DATACORE.BI_Dimension_Factura ADD CONSTRAINT PK_Dimension_Factura PRIMARY KEY (Factura_ID);
 ALTER TABLE DATACORE.BI_Dimension_Pedido ADD CONSTRAINT PK_Dimension_Pedido PRIMARY KEY (Pedido_ID);
 
--- PKS de Hechos
-ALTER TABLE DATACORE.BI_Hecho_Compra ADD CONSTRAINT PK_Hecho_Compra PRIMARY KEY (Compra_ID);
-ALTER TABLE DATACORE.BI_Hecho_Envio ADD CONSTRAINT PK_Hecho_Envio PRIMARY KEY (Envio_ID);
-ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT PK_Hecho_Peticion PRIMARY KEY (Peticion_ID);
-ALTER TABLE DATACORE.BI_Hecho_Venta ADD CONSTRAINT PK_Hecho_Venta PRIMARY KEY (Venta_ID);
 
 --FKs (de hechos)
 -- Hecho_Venta
@@ -172,3 +163,52 @@ ALTER TABLE DATACORE.BI_Hecho_Compra ADD CONSTRAINT FK_Compra_Dimension_TipoMate
 ALTER TABLE DATACORE.BI_Hecho_Compra ADD CONSTRAINT FK_Compra_Dimension_UbicacionProveedor FOREIGN KEY (Ubicacion_Proveedor_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
 ALTER TABLE DATACORE.BI_Hecho_Compra ADD CONSTRAINT FK_Compra_Dimension_OrdenCompra FOREIGN KEY (Orden_De_Compra_ID) REFERENCES DATACORE.BI_Dimension_Orden_De_Compra(Orden_De_Compra_ID);
 ALTER TABLE DATACORE.BI_Hecho_Compra ADD CONSTRAINT FK_Compra_Dimension_UbicacionSucursal FOREIGN KEY (Ubicacion_Sucursal_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
+
+-- PKS de Hechos
+ALTER TABLE DATACORE.BI_Hecho_Compra
+ADD CONSTRAINT PK_Hecho_Compra
+PRIMARY KEY (
+  Tiempo_ID,
+  Sucursal_ID,
+  TipoMaterial_ID,
+  Ubicacion_Proveedor_ID,
+  Orden_De_Compra_ID,
+  Ubicacion_Sucursal_ID
+);
+
+ALTER TABLE DATACORE.BI_Hecho_Envio
+ADD CONSTRAINT PK_Hecho_Envio
+PRIMARY KEY (
+  Tiempo_Programado_ID,
+  Tiempo_Realizado_ID,
+  Ubicacion_Destino_ID,
+  Sucursal_ID,
+  Factura_ID
+);
+
+ALTER TABLE DATACORE.BI_Hecho_Peticion
+ADD CONSTRAINT PK_Hecho_Peticion
+PRIMARY KEY (
+  Tiempo_ID,
+  Rango_Etario_Cliente_ID,
+  Sucursal_ID,
+  Turno_ID,
+  Estado_Pedido_ID,
+  Ubicacion_Cliente_ID,
+  Ubicacion_Sucursal_ID,
+  Pedido_ID
+);
+
+ALTER TABLE DATACORE.BI_Hecho_Venta
+ADD CONSTRAINT PK_Hecho_Venta
+PRIMARY KEY (
+  Tiempo_ID,
+  Ubicacion_Cliente_ID,
+  Rango_Etario_Cliente_ID,
+  Turno_ID,
+  Sillon_Modelo_ID,
+  Sucursal_ID,
+  Ubicacion_Sucursal_ID,
+  Factura_ID,
+  Pedido_ID
+);

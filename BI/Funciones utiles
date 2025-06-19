@@ -17,6 +17,9 @@ SET @Resultado = '>50'
 RETURN @Resultado
 END
 GO
+
+
+
 CREATE FUNCTION DATACORE.Turno(
 @FechaFactura DATETIME2)
 RETURNS NVARCHAR(30)
