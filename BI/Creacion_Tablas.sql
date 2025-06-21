@@ -1,5 +1,6 @@
 --          DIMENSIONES
-
+BEGIN TRAN
+GO
 CREATE TABLE DATACORE.BI_Dimension_Tiempo (
     Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
     Anio INTEGER,
@@ -67,49 +68,48 @@ CREATE TABLE DATACORE.BI_Dimension_Pedido (
 --          HECHOS
 
 CREATE TABLE DATACORE.BI_Hecho_Venta (
-    Venta_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Rango_Etario_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Turno_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Sillon_Modelo_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Factura_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Pedido_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Tiempo_ID BIGINT NOT NULL,
+    Sucursal_ID BIGINT NOT NULL,
+    Ubicacion_Cliente_ID BIGINT  NOT NULL,
+    Ubicacion_Sucursal_ID BIGINT NOT NULL,
+    Rango_Etario_Cliente_ID BIGINT NOT NULL,
+    Turno_ID BIGINT NOT NULL,
+    Sillon_Modelo_ID BIGINT NOT NULL,
+    Factura_ID BIGINT NOT NULL,
+    Pedido_ID BIGINT NOT NULL,
     Cantidad_Venta BIGINT,
     Precio_Venta DECIMAL(18,2)
 );
 
 CREATE TABLE DATACORE.BI_Hecho_Compra (
-    Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
-    TipoMaterial_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Proveedor_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Orden_De_Compra_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Tiempo_ID BIGINT NOT NULL,
+    Sucursal_ID BIGINT NOT NULL,
+    TipoMaterial_ID BIGINT  NOT NULL,
+    Ubicacion_Proveedor_ID BIGINT NOT NULL,
+    Orden_De_Compra_ID BIGINT NOT NULL,
+    Ubicacion_Sucursal_ID BIGINT NOT NULL,
     Cantidad_Compra BIGINT,
     Precio_Compra DECIMAL(18,2)
 );
 
 CREATE TABLE DATACORE.BI_Hecho_Envio (
-    Envio_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Tiempo_Programado_ID BIGINT IDENTITY(1,1) NOT NULL, 
-    Tiempo_Realizado_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Destino_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Factura_ID BIGINT IDENTITY(1,1) NOT NULL,
+    Tiempo_Programado_ID BIGINT NOT NULL, 
+    Tiempo_Realizado_ID BIGINT NOT NULL,
+    Ubicacion_Destino_ID BIGINT  NOT NULL,
+    Sucursal_ID BIGINT NOT NULL,
+    Factura_ID BIGINT NOT NULL,
     Costo_Envio DECIMAL(18,2)
 );
 
 CREATE TABLE DATACORE.BI_Hecho_Peticion (
-    Tiempo_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Rango_Etario_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL, 
-    Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Turno_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Estado_Pedido_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Cliente_ID BIGINT IDENTITY(1,1) NOT NULL,
-    Ubicacion_Sucursal_ID BIGINT IDENTITY(1,1) NOT NULL,
+	Pedido_ID BIGINT NOT NULL,
+    Tiempo_ID BIGINT NOT NULL,
+    Rango_Etario_Cliente_ID BIGINT NOT NULL, 
+    Sucursal_ID BIGINT NOT NULL,
+    Turno_ID BIGINT NOT NULL,
+    Estado_Pedido_ID BIGINT NOT NULL,
+    Ubicacion_Cliente_ID BIGINT NOT NULL,
+    Ubicacion_Sucursal_ID BIGINT NOT NULL,
     Costo_Peticion DECIMAL(18,2)
 );
 
@@ -212,3 +212,6 @@ PRIMARY KEY (
   Factura_ID,
   Pedido_ID
 );
+GO
+--ROLLBACK
+COMMIT
