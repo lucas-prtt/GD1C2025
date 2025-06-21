@@ -27,7 +27,7 @@ SELECT f.Factura_Fecha AS FacturaFecha,
 	DATACORE.RangoEtario(f.Factura_Fecha, c.Cliente_FechaNacimiento) AS RangoEtario,
 	MONTH(f.Factura_Fecha) AS MF, 
 	YEAR(f.Factura_Fecha) AS YF, 
-	DATEPART(QUARTER, f.Factura_Fecha) AS QF, 
+	DATACORE.Cuatrimestre(f.Factura_Fecha) AS QF, 
 	DATACORE.Turno(f.Factura_Fecha) AS TF
 	FROM DATACORE.Detalles_Facturas dt
 	INNER JOIN DATACORE.Facturas f ON f.Factura_Numero = dt.Factura_Numero
@@ -63,7 +63,7 @@ SELECT f.Factura_Fecha AS FacturaFecha,
     DATACORE.RangoEtario(f.Factura_Fecha, c.Cliente_FechaNacimiento),
     MONTH(f.Factura_Fecha), 
     YEAR(f.Factura_Fecha), 
-    DATEPART(QUARTER, f.Factura_Fecha), 
+    DATACORE.Cuatrimestre(f.Factura_Fecha), 
     DATACORE.Turno(f.Factura_Fecha)
 	)
 INSERT INTO DATACORE.BI_Hecho_Venta(Tiempo_ID, Rango_Etario_Cliente_ID, Sucursal_ID, Turno_ID, Sillon_Modelo_ID, Ubicacion_Cliente_ID, Ubicacion_Sucursal_ID, Factura_ID, Pedido_ID, Cantidad_Venta, Precio_Venta)
@@ -81,7 +81,6 @@ INNER JOIN DATACORE.BI_Dimension_Pedido bip ON bip.Pedido_Numero = tv.Pedidonume
 END
 
 GO
-
 EXEC DATACORE.Importar_Hechos_Ventas
 GO
 DROP PROCEDURE DATACORE.Importar_Hechos_Ventas
