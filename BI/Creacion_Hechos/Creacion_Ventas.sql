@@ -1,6 +1,7 @@
 CREATE PROCEDURE DATACORE.Importar_Hechos_Ventas
 AS 
 BEGIN
+WITH TempVentas AS (
 SELECT f.Factura_Fecha AS FacturaFecha, 
 	c.Cliente_FechaNacimiento AS FechaNacimiento, 
 	su.Sucursal_NroSucursal AS NroSucursal, 
@@ -28,7 +29,6 @@ SELECT f.Factura_Fecha AS FacturaFecha,
 	YEAR(f.Factura_Fecha) AS YF, 
 	DATEPART(QUARTER, f.Factura_Fecha) AS QF, 
 	DATACORE.Turno(f.Factura_Fecha) AS TF
-	INTO #TempVentas
 	FROM DATACORE.Detalles_Facturas dt
 	INNER JOIN DATACORE.Facturas f ON f.Factura_Numero = dt.Factura_Numero
 	INNER JOIN DATACORE.Clientes c ON f.Cliente_Dni = c.Cliente_Dni
@@ -64,12 +64,11 @@ SELECT f.Factura_Fecha AS FacturaFecha,
     MONTH(f.Factura_Fecha), 
     YEAR(f.Factura_Fecha), 
     DATEPART(QUARTER, f.Factura_Fecha), 
-    DATACORE.Turno(f.Factura_Fecha);
-
-
+    DATACORE.Turno(f.Factura_Fecha)
+	)
 INSERT INTO DATACORE.BI_Hecho_Venta(Tiempo_ID, Rango_Etario_Cliente_ID, Sucursal_ID, Turno_ID, Sillon_Modelo_ID, Ubicacion_Cliente_ID, Ubicacion_Sucursal_ID, Factura_ID, Pedido_ID, Cantidad_Venta, Precio_Venta)
 SELECT bit.Tiempo_ID, Rango_Etario_ID, Sucursal_ID, Turno_ID, Sillon_Modelo_ID, biuc.Ubicacion_ID, bius.Ubicacion_ID, Factura_ID, Pedido_ID, Cantidad, Precio
-FROM #TempVentas tv
+FROM TempVentas tv
 INNER JOIN DATACORE.BI_Dimension_Tiempo bit ON bit.Mes = tv.MF AND bit.Anio = tv.YF AND bit.Cuatrimestre = tv.QF
 INNER JOIN DATACORE.BI_Dimension_Factura bif ON bif.Factura_Numero = tv.FacturaNumero
 INNER JOIN DATACORE.BI_Dimension_ModeloSillon bim ON bim.Sillon_Modelo_Codigo = tv.ModeloCodigo
@@ -80,5 +79,11 @@ INNER JOIN DATACORE.BI_Dimension_Sucursales bis ON bis.Sucursal_NroSucursal = tv
 INNER JOIN DATACORE.BI_Dimension_RangoEtario bir ON bir.Rango_Etario_Descripcion = tv.RangoEtario
 INNER JOIN DATACORE.BI_Dimension_Pedido bip ON bip.Pedido_Numero = tv.Pedidonumero
 END
+
+GO
+
+EXEC DATACORE.Importar_Hechos_Ventas
+GO
+DROP PROCEDURE DATACORE.Importar_Hechos_Ventas
 GO
 SELECT * FROM DATACORE.BI_Hecho_Venta
