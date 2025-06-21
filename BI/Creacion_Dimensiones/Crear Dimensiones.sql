@@ -9,10 +9,10 @@ GO
 ---------------- Insertar datos en la tabla BI_Dimension_Tiempo
 -- TIEMPO
 INSERT INTO DATACORE.BI_Dimension_Tiempo (Anio, Cuatrimestre, Mes)
-SELECT
+SELECT DISTINCT
 	YEAR(Fecha) AS Anio, 
-	MONTH(Fecha) AS Mes, 
-	DATEPART(QUARTER, Fecha) AS Cuatrimestre
+	DATACORE.Cuatrimestre(Fecha) AS Cuatrimestre,
+	MONTH(Fecha) AS Mes
 FROM (
     SELECT DISTINCT Factura_Fecha AS Fecha FROM DATACORE.Facturas
     UNION
