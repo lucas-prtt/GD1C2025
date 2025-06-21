@@ -18,6 +18,26 @@ SELECT @id = Tiempo_ID
     RETURN @id;
 END
 
+
+
+GO
+
+CREATE FUNCTION DATACORE.Cuatrimestre (@fecha datetime) 
+RETURNS INTEGER 
+AS
+BEGIN
+DECLARE @id int;
+
+SET @id = CASE 
+        WHEN MONTH(@fecha) BETWEEN 1 AND 4 THEN 1
+        WHEN MONTH(@fecha) BETWEEN 5 AND 8 THEN 2
+        WHEN MONTH(@fecha) BETWEEN 9 AND 12 THEN 3
+        ELSE NULL
+    END;
+
+    RETURN @id;
+END
+
 GO
 
 -- Recibe una edad int y devuelve el id del rango de esa edad
