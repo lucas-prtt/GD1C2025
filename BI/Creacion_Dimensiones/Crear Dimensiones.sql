@@ -1,10 +1,10 @@
 -- ACA VA TODOS LOS PROCEDURES QUE IMPORTAN TODOS LAS DIMENSIONES
 
 
+BEGIN TRANSACTION
 
 
-
-
+GO
 
 ---------------- Insertar datos en la tabla BI_Dimension_Tiempo
 -- TIEMPO
@@ -52,7 +52,7 @@ FROM DATACORE.Modelos_De_Sillones
 
 
 ---------------Insertar datos en la tabla BI_Dimension_Rango_Etario
-INSERT INTO DATACORE.BI_Dimension_Rango_Etario(descripcion_rango)
+INSERT INTO DATACORE.BI_Dimension_RangoEtario(Rango_Etario_Descripcion)
 VALUES ('< 25'), ('25-35'), ('35-50'), ('> 50')
 
 ---------------Insertar datos en la tabla BI_Dimension_Turno
@@ -61,7 +61,7 @@ VALUES ('08:00 - 14:00'), ('14:00 - 20:00'), ('Fuera de horario')
 
 ---------------Insertar datos en la tabla BI_Dimension_Estado_Pedido
 INSERT INTO DATACORE.BI_Dimension_Estado_Pedido(Estado_Pedido_Desc)
-SELECT  DISTINCT Pedido
+SELECT  DISTINCT Pedido_Numero
 FROM DATACORE.Pedidos
 
 ---------------Insertar datos en la tabla BI_Dimension_TipoMaterial
@@ -75,8 +75,9 @@ SELECT DISTINCT Pedido_Numero FROM DATACORE.Pedidos
 
 
 ---------------Insertar datos ne la Tabla BI_Dimension_Orden_De_Compra
-INSERT INTO DATACORE.Dimenension_Orden_De_Compra (Compra_Numero)
+INSERT INTO DATACORE.BI_Dimension_Orden_De_Compra (Compra_Numero)
 SELECT Compra_Numero
 FROM DATACORE.Compras
-
-
+GO
+--ROLLBACK
+COMMIT 
