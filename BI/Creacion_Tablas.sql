@@ -72,7 +72,6 @@ CREATE TABLE DATACORE.BI_Dimension_Pedido (
 --          HECHOS
 
 CREATE TABLE DATACORE.BI_Hecho_Venta (
-    Venta_ID BIGINT NOT NULL,
     Tiempo_ID BIGINT NOT NULL,
     Sucursal_ID BIGINT NOT NULL,
     Ubicacion_Cliente_ID BIGINT NOT NULL,
