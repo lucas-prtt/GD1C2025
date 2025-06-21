@@ -21,7 +21,9 @@ CREATE TABLE DATACORE.BI_Dimension_Sucursales (
 CREATE TABLE DATACORE.BI_Dimension_Ubicacion (
     Ubicacion_ID BIGINT IDENTITY(1,1) NOT NULL,
     Provincia NVARCHAR(255),
-    Localidad NVARCHAR(255)
+    Localidad NVARCHAR(255),
+    Localidad_ID BIGINT,
+    Provincia_ID BIGINT
 );
 
 CREATE TABLE DATACORE.BI_Dimension_RangoEtario (

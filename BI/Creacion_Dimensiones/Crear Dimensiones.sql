@@ -41,8 +41,8 @@ SELECT DISTINCT Factura_Numero
 FROM DATACORE.Facturas
 
 ---------------Insertar datos en la tabla BI_Dimension_Ubicacion
-INSERT INTO DATACORE.BI_Dimension_Ubicacion (Provincia, Localidad)
-SELECT p.Provincia_Nombre, l.Localidad_Nombre
+INSERT INTO DATACORE.BI_Dimension_Ubicacion (Provincia, Localidad, Localidad_ID, Provincia_ID)
+SELECT p.Provincia_Nombre, l.Localidad_Nombre, l.Localidad_ID, p.Provincia_Id
 FROM DATACORE.Localidades l INNER JOIN DATACORE.Provincias p ON l.Provincia_ID=p.Provincia_ID
 
 ---------------Insertar datos en la tabla BI_Dimension_ModeloSillon
