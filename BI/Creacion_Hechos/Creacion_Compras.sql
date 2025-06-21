@@ -1,39 +1,70 @@
-INSERT INTO DATACORE.BI_Hecho_Compra (
-    Tiempo_ID,
-    Sucursal_ID,
-    TipoMaterial_ID,
-    Ubicacion_Proveedor_ID,
-    Orden_De_Compra_ID,
-    Ubicacion_Sucursal_ID,
-    Cantidad_Compra,
-    Precio_Compra
-)
-SELECT
-    DATACORE.getTiempoID(c.Compra_Fecha) AS Tiempo_ID,
-    sbi.Sucursal_ID,
-    tbi.TipoMaterial_ID,
-    ubiProv.Ubicacion_ID AS Ubicacion_Proveedor_ID,
-    obi.Orden_De_Compra_ID,
-    ubiSuc.Ubicacion_ID AS Ubicacion_Sucursal_ID,
-    dc.Detalle_Compra_Cantidad,
-    dc.Detalle_Compra_Precio
-FROM DATACORE.Detalles_Compras dc
-INNER JOIN DATACORE.Compras c ON c.Compra_Numero = dc.Compra_Numero
-INNER JOIN DATACORE.Materiales m ON m.Material_Id = dc.Material_Id
-INNER JOIN DATACORE.TipoMateriales tm ON tm.TipoMaterial_Id = m.TipoMaterial_Id
-INNER JOIN DATACORE.Proveedores p ON p.Proveedor_Cuit = c.Proveedor_Cuit
-INNER JOIN DATACORE.Sucursales s ON s.Sucursal_NroSucursal = c.Sucursal_NroSucursal
--- Ubicación del proveedor
-INNER JOIN DATACORE.Localidades lprov ON lprov.Localidad_Id = p.Localidad_Id
-INNER JOIN DATACORE.Provincias pprov ON pprov.Provincia_Id = lprov.Provincia_Id
-INNER JOIN DATACORE.BI_Dimension_Ubicacion ubiProv ON ubiProv.Localidad = lprov.Localidad_Nombre AND ubiProv.Provincia = pprov.Provincia_Nombre
--- Ubicación de la sucursal
-INNER JOIN DATACORE.Localidades lsuc ON lsuc.Localidad_Id = s.Localidad_Id
-INNER JOIN DATACORE.Provincias psuc ON psuc.Provincia_Id = lsuc.Provincia_Id
-INNER JOIN DATACORE.BI_Dimension_Ubicacion ubiSuc ON ubiSuc.Localidad = lsuc.Localidad_Nombre AND ubiSuc.Provincia = psuc.Provincia_Nombre
--- Sucursal BI
-INNER JOIN DATACORE.BI_Dimension_Sucursales sbi ON sbi.Sucursal_NroSucursal = s.Sucursal_NroSucursal
--- Tipo Material BI
-INNER JOIN DATACORE.BI_Dimension_TipoMaterial tbi ON tbi.TipoMaterial_Tipo = tm.TipoMaterial_Tipo
--- Orden de compra BI
-INNER JOIN DATACORE.BI_Dimension_Orden_De_Compra obi ON obi.Compra_Numero = c.Compra_Numero;
+CREATE PROCEDURE DATACORE.Importar_Hechos_Compra
+AS
+BEGIN
+    WITH TempCompras AS (
+        SELECT 
+            c.Compra_Fecha AS FechaCompra,
+            DATACORE.getTiempoID(c.Compra_Fecha) AS TiempoID,
+            s.Sucursal_NroSucursal AS NroSucursal,
+            tm.TipoMaterial_Tipo AS TipoMaterial,
+            p.Localidad_Id AS LocalidadIDProveedor,
+            lp.Provincia_Id AS ProvinciaIDProveedor,
+            lp.Localidad_Nombre AS LocalidadNombreProveedor,
+            pp.Provincia_Nombre AS ProvinciaNombreProveedor,
+            s.Localidad_Id AS LocalidadIDSucursal,
+            ls.Provincia_Id AS ProvinciaIDSucursal,
+            ls.Localidad_Nombre AS LocalidadNombreSucursal,
+            ps.Provincia_Nombre AS ProvinciaNombreSucursal,
+            c.Compra_Numero AS CompraNumero,
+            SUM(dc.Detalle_Compra_Cantidad) AS TotalCantidad,
+            SUM(dc.Detalle_Compra_Precio) AS TotalPrecio
+        FROM DATACORE.Detalles_Compras dc
+        INNER JOIN DATACORE.Compras c ON c.Compra_Numero = dc.Compra_Numero
+        INNER JOIN DATACORE.Materiales m ON m.Material_Id = dc.Material_Id
+        INNER JOIN DATACORE.TipoMateriales tm ON tm.TipoMaterial_Id = m.TipoMaterial_Id
+        INNER JOIN DATACORE.Proveedores p ON p.Proveedor_Cuit = c.Proveedor_Cuit
+        INNER JOIN DATACORE.Localidades lp ON lp.Localidad_Id = p.Localidad_Id
+        INNER JOIN DATACORE.Provincias pp ON pp.Provincia_Id = lp.Provincia_Id
+        INNER JOIN DATACORE.Sucursales s ON s.Sucursal_NroSucursal = c.Sucursal_NroSucursal
+        INNER JOIN DATACORE.Localidades ls ON ls.Localidad_Id = s.Localidad_Id
+        INNER JOIN DATACORE.Provincias ps ON ps.Provincia_Id = ls.Provincia_Id
+        GROUP BY 
+            c.Compra_Fecha, c.Compra_Numero,
+            s.Sucursal_NroSucursal,
+            tm.TipoMaterial_Tipo,
+            p.Localidad_Id, lp.Localidad_Nombre, lp.Provincia_Id, pp.Provincia_Nombre,
+            s.Localidad_Id, ls.Localidad_Nombre, ls.Provincia_Id, ps.Provincia_Nombre
+    )
+
+    INSERT INTO DATACORE.BI_Hecho_Compra (
+        Tiempo_ID,
+        Sucursal_ID,
+        TipoMaterial_ID,
+        Ubicacion_Proveedor_ID,
+        Orden_De_Compra_ID,
+        Ubicacion_Sucursal_ID,
+        Cantidad_Compra,
+        Precio_Compra
+    )
+    SELECT
+        tc.TiempoID,
+        bis.Sucursal_ID,
+        bitm.TipoMaterial_ID,
+        biup.Ubicacion_ID,
+        bioc.Orden_De_Compra_ID,
+        bius.Ubicacion_ID,
+        tc.TotalCantidad,
+        tc.TotalPrecio
+    FROM TempCompras tc
+    INNER JOIN DATACORE.BI_Dimension_Sucursales bis 
+        ON bis.Sucursal_NroSucursal = tc.NroSucursal
+    INNER JOIN DATACORE.BI_Dimension_TipoMaterial bitm 
+        ON bitm.TipoMaterial_Tipo = tc.TipoMaterial
+    INNER JOIN DATACORE.BI_Dimension_Orden_De_Compra bioc 
+        ON bioc.Compra_Numero = tc.CompraNumero
+    INNER JOIN DATACORE.BI_Dimension_Ubicacion biup 
+        ON biup.Localidad_ID = tc.LocalidadIDProveedor AND biup.Provincia_ID = tc.ProvinciaIDProveedor
+    INNER JOIN DATACORE.BI_Dimension_Ubicacion bius 
+        ON bius.Localidad_ID = tc.LocalidadIDSucursal AND bius.Provincia_ID = tc.ProvinciaIDSucursal
+END
+GO
