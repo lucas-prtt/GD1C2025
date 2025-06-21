@@ -78,7 +78,7 @@ ELSE
 SET @Resultado = 'Fuera de horario'
 RETURN @Resultado
 END
-
+GO
 
 -- Recibe una fecha datetime y devuelve el id del rango horario asociado
 CREATE FUNCTION DATACORE.getRangoHorarioPorFecha(@fechaHora DATETIME)
@@ -87,11 +87,10 @@ AS
 BEGIN
 DECLARE @id INT
 IF(DATEPART(HOUR,@fechaHora) BETWEEN 8 AND 13) 
-SET @id = (SELECT Turno_ID FROM DATACORE.BI_Dimension_Turno  WHERE descripcion_rango = ('08:00-14:00'))
+SET @id = (SELECT Turno_ID FROM DATACORE.BI_Dimension_Turno  WHERE Horario = ('08:00-14:00'))
 ELSE IF(DATEPART(HOUR,@fechaHora) BETWEEN 14 AND 19)
-SET @id = (SELECT Turno_ID FROM DATACORE.BI_Dimension_Turno WHERE descripcion_rango = ('14:00-20:00'))
-    ELSE 
-        RAISERROR('La fecha proporcionada no corresponde a un rango horario válido.', 16, 1)
+SET @id = (SELECT Turno_ID FROM DATACORE.BI_Dimension_Turno WHERE Horario = ('14:00-20:00'))
+
 
 return @id
 END
