@@ -1,5 +1,4 @@
 
-
 INSERT INTO DATACORE.BI_Hecho_Envio (
 Tiempo_Programado_ID, Tiempo_Realizado_ID, Ubicacion_Destino_ID, Sucursal_ID, Factura_ID, Costo_Envio
 )
@@ -14,13 +13,3 @@ INNER JOIN DATACORE.Clientes cl ON cl.Cliente_DNI = f.Cliente_DNI
 INNER JOIN DATACORE.Localidades loc ON loc.Localidad_ID = cl.Localidad_Id
 INNER JOIN DATACORE.BI_Dimension_Ubicacion ubi ON ubi.Localidad = loc.Localidad_Nombre AND ubi.Provincia_ID = loc.Provincia_Id
 GROUP BY tiProg.Tiempo_ID, tiReal.Tiempo_ID, ubi.Ubicacion_ID, Sucursal_ID, Factura_ID
-
-
-
-
-
-
-
-
-
-
