@@ -105,7 +105,7 @@ CREATE TABLE DATACORE.BI_Hecho_Peticion (
     Estado_Pedido_ID BIGINT  NOT NULL,
     Ubicacion_Cliente_ID BIGINT  NOT NULL,
     Ubicacion_Sucursal_ID BIGINT  NOT NULL,
-    Dias_De_Fabricacion_ID BIGINT NOT NULL,
+    Dias_Fabricacion_ID BIGINT NOT NULL,
     Cantidad_Peticiones INTEGER,
     Costo_Peticion DECIMAL(18,2)
 );
@@ -156,7 +156,7 @@ ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT PK_Hecho_Peticion PRIMARY 
     Estado_Pedido_ID,
     Ubicacion_Cliente_ID,
     Ubicacion_Sucursal_ID,
-    Dias_De_Fabricacion_ID
+    Dias_Fabricacion_ID
 );
 
 

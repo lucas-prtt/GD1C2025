@@ -112,14 +112,6 @@ INNER JOIN DATACORE.Detalles_Facturas dtf ON dtf.Factura_Numero = f.Factura_Nume
 INNER JOIN DATACORE.Detalles_Pedidos dtp ON dtf.Sillon_Codigo = dtp.Sillon_Codigo AND dtp.Pedido_Numero = dtf.Pedido_Numero
 INNER JOIN DATACORE.Pedidos p ON dtp.Pedido_Numero = p.Pedido_Numero
 
-INSERT INTO DATACORE.BI_Dimension_Dias_De_Fabricacion (Dias_De_Fabricacion)
-SELECT -1 -- Pedidos cancelados
-UNION 
-SELECT DISTINCT DATEDIFF(DAY, Pedido_Fecha, Factura_Fecha)
-FROM DATACORE.Facturas f
-INNER JOIN DATACORE.Detalles_Facturas dtf ON dtf.Factura_Numero = f.Factura_Numero
-INNER JOIN DATACORE.Detalles_Pedidos dtp ON dtf.Sillon_Codigo = dtp.Sillon_Codigo AND dtp.Pedido_Numero = dtf.Pedido_Numero
-INNER JOIN DATACORE.Pedidos p ON dtp.Pedido_Numero = p.Pedido_Numero
 
 GO
 --ROLLBACK

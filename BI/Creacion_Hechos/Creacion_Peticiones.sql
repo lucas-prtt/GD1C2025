@@ -6,7 +6,7 @@ INSERT INTO DATACORE.BI_Hecho_Peticion (
         Ubicacion_Cliente_ID,
         Ubicacion_Sucursal_ID,
         Sucursal_ID,
-        Dias_De_Fabricacion_ID,
+        Dias_Fabricacion_ID,
         Cantidad_Peticiones,
         Costo_Peticion
 )
