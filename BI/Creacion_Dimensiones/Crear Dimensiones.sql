@@ -89,8 +89,8 @@ INSERT INTO DATACORE.BI_Dimension_Estado_Envio (Estado_Envio_Desc)
 VALUES 
     ('No entregado'),
     ('Entregado en tiempo'),
-    ('Realizado'),
-    ('Realizado_Tarde')
+    ('Entregado fuera de tiempo')
+
 
 -- ==========================
 -- Insertar datos en la DIM TIPO MATERIAL
