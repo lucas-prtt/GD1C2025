@@ -4,7 +4,7 @@ BEGIN
     -- CTE temporal para agrupar compras según dimensiones BI
     WITH TempCompras AS (
         SELECT 
-            DATACORE.getTiempoID(c.Compra_Fecha) AS TiempoID,
+            idt.Tiempo_ID AS TiempoID,
             s.Sucursal_NroSucursal AS NroSucursal,
             tm.TipoMaterial_Tipo AS TipoMaterial,
             
@@ -28,8 +28,10 @@ BEGIN
         INNER JOIN DATACORE.Sucursales s ON s.Sucursal_NroSucursal = c.Sucursal_NroSucursal
         INNER JOIN DATACORE.Localidades ls ON ls.Localidad_Id = s.Localidad_Id
         INNER JOIN DATACORE.Provincias ps ON ps.Provincia_Id = ls.Provincia_Id
-        GROUP BY 
-            DATACORE.getTiempoID(c.Compra_Fecha),
+		INNER JOIN DATACORE.BI_Dimension_Tiempo idt ON YEAR(Compra_Fecha) = idt.Anio AND idt.Mes =MONTH(Compra_Fecha) AND DATACORE.Cuatrimestre(Compra_Fecha) = idt.Cuatrimestre
+
+		GROUP BY 
+            idt.Tiempo_ID,
             s.Sucursal_NroSucursal,
             tm.TipoMaterial_Tipo,
             lp.Localidad_ID, lp.Provincia_ID,
@@ -64,3 +66,4 @@ BEGIN
         ON bius.Localidad_ID = tc.LocalidadIDSucursal AND bius.Provincia_ID = tc.ProvinciaIDSucursal
 END
 GO
+EXEC DATACORE.Importar_Hechos_Compra
