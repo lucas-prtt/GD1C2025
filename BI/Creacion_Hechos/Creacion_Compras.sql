@@ -17,7 +17,7 @@ BEGIN
             ls.Provincia_ID AS ProvinciaIDSucursal,
 
             SUM(dc.Detalle_Compra_Cantidad) AS TotalCantidad,
-            SUM(dc.Detalle_Compra_Precio) AS TotalPrecio
+            SUM(dc.Detalle_Compra_Subtotal) AS TotalPrecio
         FROM DATACORE.Detalles_Compras dc
         INNER JOIN DATACORE.Compras c ON c.Compra_Numero = dc.Compra_Numero
         INNER JOIN DATACORE.Materiales m ON m.Material_Id = dc.Material_Id

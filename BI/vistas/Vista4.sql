@@ -1,11 +1,12 @@
-CREATE VIEW DATACORE.VW_PromedioCostoEnvioPorSucursalYCuatrimestre
-AS
-    SELECT
-        dt.Anio,
-        dt.Cuatrimestre,
-        ds.Sucursal_NroSucursal,
-        AVG(he.Costo_Envio) AS Promedio_Costo_Envio
-    FROM DATACORE.BI_Hecho_Envio he
-        INNER JOIN DATACORE.BI_Dimension_Tiempo dt ON he.Tiempo_Programado_ID = dt.Tiempo_ID
-        INNER JOIN DATACORE.BI_Dimension_Sucursales ds ON he.Sucursal_ID = ds.Sucursal_ID
-    GROUP BY dt.Anio, dt.Cuatrimestre, ds.Sucursal_NroSucursal
+CREATE VIEW DATACORE.Vista_Volumen_Pedidos AS
+SELECT 
+    t.Anio,
+    t.Mes,
+    s.Sucursal_NroSucursal,
+    tu.Horario,
+    SUM(p.Cantidad_Peticiones) AS Total_Pedidos
+FROM DATACORE.BI_Hecho_Peticion p
+INNER JOIN DATACORE.BI_Dimension_Tiempo t ON p.Tiempo_ID = t.Tiempo_ID
+INNER JOIN DATACORE.BI_Dimension_Turno tu ON p.Turno_ID = tu.Turno_ID
+INNER JOIN DATACORE.BI_Dimension_Sucursales s ON p.Sucursal_ID = s.Sucursal_ID
+GROUP BY t.Anio, t.Mes, s.Sucursal_NroSucursal, tu.Horario;

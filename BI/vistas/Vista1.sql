@@ -1,10 +1,13 @@
-CREATE VIEW DATACORE.VW_CantidadVentasPorModeloYAnio
-AS
-    SELECT
-        dt.Anio,
-        dms.Sillon_Modelo_Descripcion,
-        SUM(hv.Cantidad_Venta) AS Total_Ventas
-    FROM DATACORE.BI_Hecho_Venta hv
-        INNER JOIN DATACORE.BI_Dimension_Tiempo dt ON hv.Tiempo_ID = dt.Tiempo_ID
-        INNER JOIN DATACORE.BI_Dimension_ModeloSillon dms ON hv.Sillon_Modelo_ID = dms.Sillon_Modelo_ID
-    GROUP BY dt.Anio, dms.Sillon_Modelo_Descripcion
+CREATE VIEW DATACORE.Vista_Ganancias_Por_Sucursal AS
+SELECT 
+    t.Anio,
+    t.Mes,
+    s.Sucursal_NroSucursal,
+    --SUM(ISNULL(v.Precio_Venta, 0)) AS Total_Ingresos,
+    --SUM(ISNULL(c.Precio_Compra, 0)) AS Total_Egresos,
+    SUM(ISNULL(v.Precio_Venta, 0)) - SUM(ISNULL(c.Precio_Compra, 0)) AS Ganancia
+FROM DATACORE.BI_Dimension_Tiempo t
+JOIN DATACORE.BI_Hecho_Venta v ON v.Tiempo_ID = t.Tiempo_ID
+JOIN DATACORE.BI_Hecho_Compra c ON c.Tiempo_ID = t.Tiempo_ID AND v.Sucursal_ID = c.Sucursal_ID
+JOIN DATACORE.BI_Dimension_Sucursales s ON s.Sucursal_ID = v.Sucursal_ID
+GROUP BY t.Anio, t.Mes, s.Sucursal_NroSucursal;
