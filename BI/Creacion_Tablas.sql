@@ -93,7 +93,7 @@ CREATE TABLE DATACORE.BI_Hecho_Envio (
     Estado_Envio_ID BIGINT  NOT NULL,
     Ubicacion_Destino_ID BIGINT  NOT NULL,
     Cantidad_Envios BIGINT,
-    Costo_Envio_Total DECIMAL(18,2),
+    Costo_Traslado_Total DECIMAL(18,2),
     Costo_Subida_Total DECIMAL(18,2)
 );
 
