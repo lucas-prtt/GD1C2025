@@ -89,7 +89,8 @@ INSERT INTO DATACORE.BI_Dimension_Estado_Envio (Estado_Envio_Desc)
 VALUES 
     ('No entregado'),
     ('Entregado en tiempo'),
-    ('Entregado fuera de tiempo')
+    ('Realizado'),
+    ('Realizado_Tarde')
 
 -- ==========================
 -- Insertar datos en la DIM TIPO MATERIAL
@@ -104,6 +105,15 @@ FROM DATACORE.TipoMateriales
 -- Se deduce desde pedidos (fecha creación vs. fecha concreción)
 INSERT INTO DATACORE.BI_Dimension_Dias_De_Fabricacion (Dias_De_Fabricacion)
 SELECT NULL -- Pedidos cancelados
+UNION 
+SELECT DISTINCT DATEDIFF(DAY, Pedido_Fecha, Factura_Fecha)
+FROM DATACORE.Facturas f
+INNER JOIN DATACORE.Detalles_Facturas dtf ON dtf.Factura_Numero = f.Factura_Numero
+INNER JOIN DATACORE.Detalles_Pedidos dtp ON dtf.Sillon_Codigo = dtp.Sillon_Codigo AND dtp.Pedido_Numero = dtf.Pedido_Numero
+INNER JOIN DATACORE.Pedidos p ON dtp.Pedido_Numero = p.Pedido_Numero
+
+INSERT INTO DATACORE.BI_Dimension_Dias_De_Fabricacion (Dias_De_Fabricacion)
+SELECT -1 -- Pedidos cancelados
 UNION 
 SELECT DISTINCT DATEDIFF(DAY, Pedido_Fecha, Factura_Fecha)
 FROM DATACORE.Facturas f
