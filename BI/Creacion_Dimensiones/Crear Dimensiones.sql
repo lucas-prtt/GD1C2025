@@ -61,7 +61,7 @@ VALUES ('08:00 - 14:00'), ('14:00 - 20:00'), ('Fuera de horario')
 
 ---------------Insertar datos en la tabla BI_Dimension_Estado_Pedido
 INSERT INTO DATACORE.BI_Dimension_Estado_Pedido(Estado_Pedido_Desc)
-SELECT  DISTINCT Pedido_Numero
+SELECT  DISTINCT Pedido_Estado
 FROM DATACORE.Pedidos
 
 ---------------Insertar datos en la tabla BI_Dimension_TipoMaterial
