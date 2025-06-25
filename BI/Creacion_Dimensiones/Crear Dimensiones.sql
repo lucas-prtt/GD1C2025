@@ -1,24 +1,20 @@
--- ACA VA TODOS LOS PROCEDURES QUE IMPORTAN TODOS LAS DIMENSIONES
-
-
 BEGIN TRANSACTION
-
-
 GO
 
----------------- Insertar datos en la tabla BI_Dimension_Tiempo
--- TIEMPO
+-- ==========================
+-- Insertar datos en la DIM TIEMPO
+-- ==========================
 INSERT INTO DATACORE.BI_Dimension_Tiempo (Anio, Cuatrimestre, Mes)
 SELECT DISTINCT
-	YEAR(Fecha) AS Anio, 
-	DATACORE.Cuatrimestre(Fecha) AS Cuatrimestre,
-	MONTH(Fecha) AS Mes
+    YEAR(Fecha) AS Anio,
+    DATACORE.Cuatrimestre(Fecha) AS Cuatrimestre,
+    MONTH(Fecha) AS Mes
 FROM (
     SELECT DISTINCT Factura_Fecha AS Fecha FROM DATACORE.Facturas
     UNION
-    SELECT DISTINCT Compra_Fecha FROM DATACORE.Compras 
+    SELECT DISTINCT Compra_Fecha FROM DATACORE.Compras
     UNION
-    SELECT DISTINCT Pedido_Fecha FROM  DATACORE.Pedidos
+    SELECT DISTINCT Pedido_Fecha FROM DATACORE.Pedidos
     UNION
     SELECT DISTINCT Envio_Fecha FROM DATACORE.Envios
     UNION
@@ -27,57 +23,95 @@ FROM (
     SELECT DISTINCT Cliente_FechaNacimiento FROM DATACORE.Clientes
     UNION
     SELECT DISTINCT Pedido_Cancelacion_Fecha FROM DATACORE.Pedidos_Cancelacion
-) AS TodasLasFechasDeLaBaseDeDatos
+) AS TodasLasFechas
 
--------------- Insertar datos en la tabla BI_Dimension_Sucursales
-INSERT INTO DATACORE.BI_Dimension_Sucursales (Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion, Sucursal_Mail)
-SELECT DISTINCT Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion, Sucursal_Mail
+-- ==========================
+-- Insertar datos en la DIM SUCURSALES
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_Sucursales (
+    Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion, Sucursal_Mail
+)
+SELECT DISTINCT 
+    Sucursal_NroSucursal, Sucursal_telefono, Sucursal_Direccion, Sucursal_Mail
 FROM DATACORE.Sucursales
 
+-- ==========================
+-- Insertar datos en la DIM UBICACIÓN
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_Ubicacion (
+    Provincia, Localidad, Localidad_ID, Provincia_ID
+)
+SELECT 
+    p.Provincia_Nombre, l.Localidad_Nombre, l.Localidad_ID, p.Provincia_Id
+FROM DATACORE.Localidades l
+INNER JOIN DATACORE.Provincias p ON l.Provincia_ID = p.Provincia_ID
 
----------------Insertar datos en la tabla BI_Dimension_Factura
-INSERT INTO DATACORE.BI_Dimension_Factura (Factura_Numero)      
-SELECT DISTINCT Factura_Numero
-FROM DATACORE.Facturas
-
----------------Insertar datos en la tabla BI_Dimension_Ubicacion
-INSERT INTO DATACORE.BI_Dimension_Ubicacion (Provincia, Localidad, Localidad_ID, Provincia_ID)
-SELECT p.Provincia_Nombre, l.Localidad_Nombre, l.Localidad_ID, p.Provincia_Id
-FROM DATACORE.Localidades l INNER JOIN DATACORE.Provincias p ON l.Provincia_ID=p.Provincia_ID
-
----------------Insertar datos en la tabla BI_Dimension_ModeloSillon
-INSERT INTO DATACORE.BI_Dimension_ModeloSillon (Sillon_Modelo_Codigo, Sillon_Modelo_Descripcion, Sillon_Modelo_Precio, Sillon_Modelo)
-SELECT Sillon_Modelo_Codigo, Sillon_Modelo_Descripcion, Sillon_Modelo_Precio, Sillon_Modelo
+-- ==========================
+-- Insertar datos en la DIM MODELO SILLÓN
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_ModeloSillon (
+    Sillon_Modelo_Codigo, Sillon_Modelo_Descripcion, Sillon_Modelo_Precio, Sillon_Modelo
+)
+SELECT 
+    Sillon_Modelo_Codigo, Sillon_Modelo_Descripcion, Sillon_Modelo_Precio, Sillon_Modelo
 FROM DATACORE.Modelos_De_Sillones
 
+-- ==========================
+-- Insertar datos en la DIM RANGO ETARIO
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_RangoEtario (Rango_Etario_Descripcion)
+VALUES 
+    ('< 25'),
+    ('25-35'),
+    ('35-50'),
+    ('> 50')
 
----------------Insertar datos en la tabla BI_Dimension_Rango_Etario
-INSERT INTO DATACORE.BI_Dimension_RangoEtario(Rango_Etario_Descripcion)
-VALUES ('< 25'), ('25-35'), ('35-50'), ('> 50')
+-- ==========================
+-- Insertar datos en la DIM TURNO
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_Turno (Horario)
+VALUES 
+    ('08:00 - 14:00'),
+    ('14:00 - 20:00'),
+    ('Fuera de horario')
 
----------------Insertar datos en la tabla BI_Dimension_Turno
-INSERT INTO DATACORE.BI_Dimension_Turno(horario)
-VALUES ('08:00 - 14:00'), ('14:00 - 20:00'), ('Fuera de horario')
-
----------------Insertar datos en la tabla BI_Dimension_Estado_Pedido
-INSERT INTO DATACORE.BI_Dimension_Estado_Pedido(Estado_Pedido_Desc)
-SELECT  DISTINCT Pedido_Estado
+-- ==========================
+-- Insertar datos en la DIM ESTADO PEDIDO
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_Estado_Pedido (Estado_Pedido_Desc)
+SELECT DISTINCT Pedido_Estado
 FROM DATACORE.Pedidos
 
----------------Insertar datos en la tabla BI_Dimension_TipoMaterial
-INSERT INTO DATACORE.BI_Dimension_TipoMaterial(TipoMaterial_Tipo)
-SELECT DISTinct TipoMaterial_Tipo
+-- ==========================
+-- Insertar datos en la DIM ESTADO ENVÍO
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_Estado_Envio (Estado_Envio_Desc)
+VALUES 
+    ('Programado'),
+    ('Programado_Tarde'),
+    ('Realizado'),
+    ('Realizado_Tarde')
+
+-- ==========================
+-- Insertar datos en la DIM TIPO MATERIAL
+-- ==========================
+INSERT INTO DATACORE.BI_Dimension_TipoMaterial (TipoMaterial_Tipo)
+SELECT DISTINCT TipoMaterial_Tipo
 FROM DATACORE.TipoMateriales
 
----------------Insertar datos en la tabla BI_Dimension_Pedido
-INSERT INTO DATACORE.BI_Dimension_Pedido(Pedido_Numero)
-SELECT DISTINCT Pedido_Numero FROM DATACORE.Pedidos
+-- ==========================
+-- Insertar datos en la DIM DÍAS DE FABRICACIÓN
+-- ==========================
+-- Se deduce desde pedidos (fecha creación vs. fecha concreción)
+INSERT INTO DATACORE.BI_Dimension_Dias_De_Fabricacion (Dias_De_Fabricacion)
+SELECT NULL -- Pedidos cancelados
+UNION 
+SELECT DISTINCT DATEDIFF(DAY, Pedido_Fecha, Factura_Fecha)
+FROM DATACORE.Facturas f
+INNER JOIN DATACORE.Detalles_Facturas dtf ON dtf.Factura_Numero = f.Factura_Numero
+INNER JOIN DATACORE.Detalles_Pedidos dtp ON dtf.Sillon_Codigo = dtp.Sillon_Codigo AND dtp.Pedido_Numero = dtf.Pedido_Numero
+INNER JOIN DATACORE.Pedidos p ON dtp.Pedido_Numero = p.Pedido_Numero
 
-
----------------Insertar datos ne la Tabla BI_Dimension_Orden_De_Compra
-INSERT INTO DATACORE.BI_Dimension_Orden_De_Compra (Compra_Numero)
-SELECT Compra_Numero
-FROM DATACORE.Compras
 GO
 --ROLLBACK
-COMMIT 
+COMMIT
