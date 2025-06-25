@@ -184,6 +184,11 @@ GO
 
 */
 
+
+/*
+CREATE PROCEDURE DATACORE.Importar_Hechos_Peticion
+AS
+BEGIN
 INSERT INTO DATACORE.BI_Hecho_Peticion(
     Tiempo_ID,
     Rango_Etario_Cliente_ID, 
@@ -233,3 +238,4 @@ GROUP BY bdt.Tiempo_ID,
     bduc.Ubicacion_ID, 
     bdus.Ubicacion_ID,
     bddf.Dias_Fabricacion_ID
+END*/
