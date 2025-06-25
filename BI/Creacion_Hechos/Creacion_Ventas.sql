@@ -2,8 +2,8 @@ CREATE PROCEDURE DATACORE.Importar_Hechos_Ventas
 AS
 BEGIN
     WITH TempVentas AS (
-        SELECT 
-            DATACORE.getTiempoID(f.Factura_Fecha) AS TiempoID,
+       SELECT 
+            idt.Tiempo_ID AS TiempoID,
             su.Sucursal_NroSucursal AS NroSucursal,
             s.Sillon_Modelo_Codigo AS ModeloCodigo,
             su.Localidad_Id AS LocalidadIDSucursal,
@@ -18,14 +18,14 @@ BEGIN
         INNER JOIN DATACORE.Sillones s ON s.Sillon_Codigo = dt.Sillon_Codigo
         INNER JOIN DATACORE.Sucursales su ON f.Sucursal_NroSucursal = su.Sucursal_NroSucursal
         INNER JOIN DATACORE.Localidades lsu ON su.Localidad_Id = lsu.Localidad_Id
+		INNER JOIN DATACORE.BI_Dimension_Tiempo idt ON YEAR(Factura_Fecha) = idt.Anio AND idt.Mes =MONTH(Factura_Fecha) AND DATACORE.Cuatrimestre(Factura_Fecha) = idt.Cuatrimestre
         GROUP BY 
-            DATACORE.getTiempoID(f.Factura_Fecha),
+            idt.Tiempo_ID,
             su.Sucursal_NroSucursal,
             s.Sillon_Modelo_Codigo,
             su.Localidad_Id, lsu.Provincia_Id,
             DATACORE.RangoEtario(f.Factura_Fecha, c.Cliente_FechaNacimiento),
-            DATACORE.Turno(f.Factura_Fecha)
-    )
+            DATACORE.Turno(f.Factura_Fecha))
 	
     INSERT INTO DATACORE.BI_Hecho_Venta (
         Tiempo_ID,
