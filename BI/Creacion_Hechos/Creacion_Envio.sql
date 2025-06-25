@@ -36,6 +36,9 @@ GROUP BY
     ubi.Ubicacion_ID;
 END 
 GO
+
+EXEC DATACORE.Importar_Hechos_Envio
+
 /*
 -- verificacion ------------------------------------
 SELECT

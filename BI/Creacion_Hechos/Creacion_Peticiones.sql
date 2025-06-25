@@ -1,5 +1,6 @@
 INSERT INTO DATACORE.BI_Hecho_Peticion (
         Tiempo_ID,
+		Tiempo_ID_Facturacion,
         Rango_Etario_Cliente_ID,
         Turno_ID,
         Estado_Pedido_ID,
@@ -10,13 +11,16 @@ INSERT INTO DATACORE.BI_Hecho_Peticion (
         Cantidad_Peticiones,
         Costo_Peticion
 )
-SELECT Tiempo_ID, Rango_Etario_ID, p.Turno_ID, bdep.Estado_Pedido_ID, bdus.Ubicacion_ID,
+SELECT bdt.Tiempo_ID,
+ISNULL(bdf.Tiempo_ID, (SELECT Tiempo_ID FROM DATACORE.BI_Dimension_Tiempo WHERE Anio IS NULL AND Cuatrimestre IS NULL and Mes IS NULL))
+AS Tiempo_ID_Facturacion,
+Rango_Etario_ID, p.Turno_ID, bdep.Estado_Pedido_ID, bdus.Ubicacion_ID,
 bdc.Ubicacion_ID, Sucursal_ID, 
 ISNULL(Dias_Fabricacion_ID, (SELECT Dias_Fabricacion_ID FROM DATACORE.BI_Dimension_Dias_De_Fabricacion WHERE Dias_De_Fabricacion IS NULL))
-, COUNT(DISTINCT p.Pedido_Numero), SUM(p.Pedido_Total) 
+, COUNT(DISTINCT p.Pedido_Numero), SUM(p.Pedido_Total)
 FROM 
 	(SELECT DISTINCT
-		dp.Pedido_Numero, p.Pedido_Fecha, t.Turno_ID ,p.Sucursal_NroSucursal, p.Pedido_Estado, p.Cliente_Dni,  DATEDIFF(DAY , p.Pedido_Fecha, f.Factura_Fecha) AS 'Dias_Fabricacion', p.Pedido_Total, f.Factura_Numero
+		dp.Pedido_Numero, f.Factura_Fecha, p.Pedido_Fecha, t.Turno_ID ,p.Sucursal_NroSucursal, p.Pedido_Estado, p.Cliente_Dni,  DATEDIFF(DAY , p.Pedido_Fecha, f.Factura_Fecha) AS 'Dias_Fabricacion', p.Pedido_Total, f.Factura_Numero
 	FROM DATACORE.Detalles_Pedidos dp
 	INNER JOIN DATACORE.Pedidos p ON dp.Pedido_Numero = p.Pedido_Numero
 	LEFT JOIN DATACORE.Detalles_Facturas df ON dp.Pedido_Numero = df.Pedido_Numero AND dp.Sillon_Codigo = df.Sillon_Codigo
@@ -25,6 +29,7 @@ FROM
 	) p
 	LEFT JOIN DATACORE.BI_Dimension_Dias_De_Fabricacion df ON df.Dias_De_Fabricacion = p.Dias_Fabricacion
 		INNER JOIN DATACORE.BI_Dimension_Tiempo bdt ON YEAR(p.Pedido_Fecha)=bdt.Anio AND MONTH(p.Pedido_Fecha)=bdt.Mes AND CEILING(DATEPART(MONTH, p.Pedido_Fecha) / 4.0) = bdt.Cuatrimestre
+		LEFT JOIN DATACORE.BI_Dimension_Tiempo bdf ON YEAR(Factura_Fecha)=bdf.Anio AND MONTH(p.Factura_Fecha)=bdf.Mes AND CEILING(DATEPART(MONTH,p.Factura_Fecha) / 4.0) = bdf.Cuatrimestre
 		 INNER JOIN DATACORE.BI_Dimension_Sucursales bds ON p.Sucursal_NroSucursal = bds.Sucursal_NroSucursal
 		 INNER JOIN DATACORE.BI_Dimension_Estado_Pedido bdep  ON p.Pedido_Estado = bdep.Estado_Pedido_Desc
 		 INNER JOIN DATACORE.Clientes c ON p.Cliente_Dni = c.Cliente_Dni
@@ -36,6 +41,6 @@ FROM
 		 INNER JOIN DATACORE.BI_Dimension_Ubicacion bdc ON c.Localidad_Id=bdc.Localidad_ID AND lc.Provincia_Id=bdc.Provincia_ID
 		 INNER JOIN DATACORE.BI_Dimension_RangoEtario bdr ON bdr.Rango_Etario_Descripcion = DATACORE.RangoEtario(p.Pedido_Fecha, c.Cliente_FechaNacimiento
 		 ) 
-GROUP BY Tiempo_ID, Rango_Etario_ID, p.Turno_ID, Estado_Pedido_ID, bdus.Ubicacion_ID, bdc.Ubicacion_ID, Sucursal_ID, Dias_Fabricacion_ID 
+GROUP BY bdt.Tiempo_ID, bdf.Tiempo_ID, Rango_Etario_ID, p.Turno_ID, Estado_Pedido_ID, bdus.Ubicacion_ID, bdc.Ubicacion_ID, Sucursal_ID, Dias_Fabricacion_ID 
 
 

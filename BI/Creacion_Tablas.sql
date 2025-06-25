@@ -100,6 +100,7 @@ CREATE TABLE DATACORE.BI_Hecho_Envio (
 CREATE TABLE DATACORE.BI_Hecho_Peticion (
     Tiempo_ID BIGINT  NOT NULL,
     Rango_Etario_Cliente_ID BIGINT  NOT NULL, 
+    Tiempo_ID_Facturacion BIGINT  NOT NULL,
     Sucursal_ID BIGINT  NOT NULL,
     Turno_ID BIGINT  NOT NULL,
     Estado_Pedido_ID BIGINT  NOT NULL,
@@ -108,6 +109,7 @@ CREATE TABLE DATACORE.BI_Hecho_Peticion (
     Dias_Fabricacion_ID BIGINT NOT NULL,
     Cantidad_Peticiones INTEGER,
     Costo_Peticion DECIMAL(18,2)
+    
 );
 
 GO
@@ -151,6 +153,7 @@ ALTER TABLE DATACORE.BI_Hecho_Envio ADD CONSTRAINT PK_Hecho_Envio PRIMARY KEY (
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT PK_Hecho_Peticion PRIMARY KEY (
     Tiempo_ID,
     Rango_Etario_Cliente_ID,
+    Tiempo_ID_Facturacion,
     Sucursal_ID,
     Turno_ID,
     Estado_Pedido_ID,
@@ -191,7 +194,7 @@ ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_Turno FOREIGN 
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_EstadoPedido FOREIGN KEY (Estado_Pedido_ID) REFERENCES DATACORE.BI_Dimension_Estado_Pedido(Estado_Pedido_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_UbicacionCliente FOREIGN KEY (Ubicacion_Cliente_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
 ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_UbicacionSucursal FOREIGN KEY (Ubicacion_Sucursal_ID) REFERENCES DATACORE.BI_Dimension_Ubicacion(Ubicacion_ID);
-
+ALTER TABLE DATACORE.BI_Hecho_Peticion ADD CONSTRAINT FK_Peticion_TiempoFacturacion FOREIGN KEY (Tiempo_ID_Facturacion) REFERENCES DATACORE.BI_Dimension_Tiempo(Tiempo_ID);
 GO
 --ROLLBACK
 COMMIT

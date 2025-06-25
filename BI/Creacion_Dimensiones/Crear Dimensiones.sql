@@ -23,6 +23,8 @@ FROM (
     SELECT DISTINCT Cliente_FechaNacimiento FROM DATACORE.Clientes
     UNION
     SELECT DISTINCT Pedido_Cancelacion_Fecha FROM DATACORE.Pedidos_Cancelacion
+    UNION
+    SELECT NULL
 ) AS TodasLasFechas
 
 -- ==========================
