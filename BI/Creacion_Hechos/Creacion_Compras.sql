@@ -1,21 +1,21 @@
 CREATE PROCEDURE DATACORE.Importar_Hechos_Compra
 AS
 BEGIN
+    -- CTE temporal para agrupar compras según dimensiones BI
     WITH TempCompras AS (
         SELECT 
-            c.Compra_Fecha AS FechaCompra,
             DATACORE.getTiempoID(c.Compra_Fecha) AS TiempoID,
             s.Sucursal_NroSucursal AS NroSucursal,
             tm.TipoMaterial_Tipo AS TipoMaterial,
-            p.Localidad_Id AS LocalidadIDProveedor,
-            lp.Provincia_Id AS ProvinciaIDProveedor,
-            lp.Localidad_Nombre AS LocalidadNombreProveedor,
-            pp.Provincia_Nombre AS ProvinciaNombreProveedor,
-            s.Localidad_Id AS LocalidadIDSucursal,
-            ls.Provincia_Id AS ProvinciaIDSucursal,
-            ls.Localidad_Nombre AS LocalidadNombreSucursal,
-            ps.Provincia_Nombre AS ProvinciaNombreSucursal,
-            c.Compra_Numero AS CompraNumero,
+            
+            -- Ubicación proveedor
+            lp.Localidad_ID AS LocalidadIDProveedor,
+            lp.Provincia_ID AS ProvinciaIDProveedor,
+
+            -- Ubicación sucursal
+            ls.Localidad_ID AS LocalidadIDSucursal,
+            ls.Provincia_ID AS ProvinciaIDSucursal,
+
             SUM(dc.Detalle_Compra_Cantidad) AS TotalCantidad,
             SUM(dc.Detalle_Compra_Precio) AS TotalPrecio
         FROM DATACORE.Detalles_Compras dc
@@ -29,11 +29,11 @@ BEGIN
         INNER JOIN DATACORE.Localidades ls ON ls.Localidad_Id = s.Localidad_Id
         INNER JOIN DATACORE.Provincias ps ON ps.Provincia_Id = ls.Provincia_Id
         GROUP BY 
-            c.Compra_Fecha, c.Compra_Numero,
+            DATACORE.getTiempoID(c.Compra_Fecha),
             s.Sucursal_NroSucursal,
             tm.TipoMaterial_Tipo,
-            p.Localidad_Id, lp.Localidad_Nombre, lp.Provincia_Id, pp.Provincia_Nombre,
-            s.Localidad_Id, ls.Localidad_Nombre, ls.Provincia_Id, ps.Provincia_Nombre
+            lp.Localidad_ID, lp.Provincia_ID,
+            ls.Localidad_ID, ls.Provincia_ID
     )
 
     INSERT INTO DATACORE.BI_Hecho_Compra (
@@ -41,7 +41,6 @@ BEGIN
         Sucursal_ID,
         TipoMaterial_ID,
         Ubicacion_Proveedor_ID,
-        Orden_De_Compra_ID,
         Ubicacion_Sucursal_ID,
         Cantidad_Compra,
         Precio_Compra
@@ -51,7 +50,6 @@ BEGIN
         bis.Sucursal_ID,
         bitm.TipoMaterial_ID,
         biup.Ubicacion_ID,
-        bioc.Orden_De_Compra_ID,
         bius.Ubicacion_ID,
         tc.TotalCantidad,
         tc.TotalPrecio
@@ -60,8 +58,6 @@ BEGIN
         ON bis.Sucursal_NroSucursal = tc.NroSucursal
     INNER JOIN DATACORE.BI_Dimension_TipoMaterial bitm 
         ON bitm.TipoMaterial_Tipo = tc.TipoMaterial
-    INNER JOIN DATACORE.BI_Dimension_Orden_De_Compra bioc 
-        ON bioc.Compra_Numero = tc.CompraNumero
     INNER JOIN DATACORE.BI_Dimension_Ubicacion biup 
         ON biup.Localidad_ID = tc.LocalidadIDProveedor AND biup.Provincia_ID = tc.ProvinciaIDProveedor
     INNER JOIN DATACORE.BI_Dimension_Ubicacion bius 
