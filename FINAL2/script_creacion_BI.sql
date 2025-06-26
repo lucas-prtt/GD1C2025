@@ -614,7 +614,7 @@ EXEC DATACORE.Importar_Hechos_Peticion
 GO
 
 --vista1
-CREATE VIEW DATACORE.Vista_Ganancias_Por_Sucursal AS
+CREATE VIEW  DATACORE.Vista_Ganancias_Por_Sucursal AS
 SELECT 
     t.Anio,
     t.Mes,
@@ -630,7 +630,7 @@ GROUP BY t.Anio, t.Mes, s.Sucursal_NroSucursal;
 GO
 
 --vista2
-CREATE VIEW DATACORE.Vista_Factura_Promedio_Mensual AS
+CREATE VIEW  DATACORE.Vista_Factura_Promedio_Mensual AS
 SELECT 
     t.Anio,
     t.Cuatrimestre,
@@ -674,23 +674,22 @@ GO
 
 
 --vista4
-CREATE VIEW DATACORE.Vista_Volumen_Pedidos
-AS
-    SELECT
-        t.Anio,
-        t.Mes,
-        s.Sucursal_NroSucursal,
-        tu.Horario,
-        SUM(p.Cantidad_Peticiones) AS Total_Pedidos
-    FROM DATACORE.BI_Hecho_Peticion p
-        INNER JOIN DATACORE.BI_Dimension_Tiempo t ON p.Tiempo_ID = t.Tiempo_ID
-        INNER JOIN DATACORE.BI_Dimension_Turno tu ON p.Turno_ID = tu.Turno_ID
-        INNER JOIN DATACORE.BI_Dimension_Sucursales s ON p.Sucursal_ID = s.Sucursal_ID
-    GROUP BY t.Anio, t.Mes, s.Sucursal_NroSucursal, tu.Horario;
+CREATE VIEW  DATACORE.Vista_Volumen_Pedidos AS
+SELECT 
+    t.Anio,
+    t.Mes,
+    s.Sucursal_NroSucursal,
+    tu.Horario,
+    SUM(p.Cantidad_Peticiones) AS Total_Pedidos
+FROM DATACORE.BI_Hecho_Peticion p
+INNER JOIN DATACORE.BI_Dimension_Tiempo t ON p.Tiempo_ID = t.Tiempo_ID
+INNER JOIN DATACORE.BI_Dimension_Turno tu ON p.Turno_ID = tu.Turno_ID
+INNER JOIN DATACORE.BI_Dimension_Sucursales s ON p.Sucursal_ID = s.Sucursal_ID
+GROUP BY t.Anio, t.Mes, s.Sucursal_NroSucursal, tu.Horario;
 GO
 
 --vista5
-CREATE VIEW DATACORE.Vista_Conversion_Pedidos AS
+CREATE VIEW  DATACORE.Vista_Conversion_Pedidos AS
 SELECT 
     t.Anio,
     t.Cuatrimestre,
@@ -718,9 +717,9 @@ INNER JOIN DATACORE.BI_Dimension_Dias_De_Fabricacion df ON df.Dias_Fabricacion_I
 GROUP BY t.Anio, t.Cuatrimestre, s.Sucursal_NroSucursal;
 GO
 
--- Vusta 7
+-- Vista 7
 
-CREATE VIEW DATACORE.VW_Promedio_Compras_Mensuales AS
+CREATE VIEW   DATACORE.Vista_Promedio_Compras_Mensuales AS
 SELECT 
     t.Anio,
     t.Mes,
@@ -750,7 +749,7 @@ GO
 
 -- Vista 9
 
-CREATE VIEW DATACORE.Vista_Cumplimiento_Envios AS
+CREATE VIEW  DATACORE.Vista_Cumplimiento_Envios AS
 SELECT 
     t.Anio,
     t.Mes,
@@ -764,7 +763,7 @@ GO
 
 
 -- Vista 10
-CREATE VIEW DATACORE.Vista_Localidades_Mayor_Costo_Envio AS
+CREATE VIEW  DATACORE.Vista_Localidades_Mayor_Costo_Envio AS
 SELECT TOP 3
     u.Localidad,
     u.Provincia,
@@ -775,3 +774,4 @@ GROUP BY u.Localidad, u.Provincia
 ORDER BY Promedio_Costo_Total DESC;
 
 GO
+
